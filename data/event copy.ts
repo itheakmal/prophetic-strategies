@@ -42,7 +42,7 @@ export const EVENT = {
       ],
       correctIndex: 0,
       explanation:
-        "The moral core was justice and collective responsibility beyond narrow tribal interest. [Replace with transcript citation]",
+        "The moral core was justice and collective responsibility beyond narrow tribal interest. [Replace with citation]",
     },
     reaction: {
       prompt: "How did the Prophet ﷺ respond in that context?",

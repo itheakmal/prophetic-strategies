@@ -15,7 +15,7 @@ export default function TribesPage() {
         <ul className="list-disc pl-5 text-sm text-stone-700">
           <li>Colors indicate blocs: <span className="font-medium">Hilf al-Fudul</span>, <span className="font-medium">Ahlaf</span>, and <span className="font-medium">External contacts</span>.</li>
           <li>Arrowed lines hint direction of interaction (e.g., outreach during Ḥajj seasons).</li>
-          <li>Click a node to view its citations (replace with your own transcript references later).</li>
+          <li>Click a node to view its citations (replace with references later).</li>
         </ul>
         {/* TODO(back-end): Replace TRIBE_NODES/TRIBE_LINKS with SSR data from /api/tribes?phase=meccan */}
       </Section>

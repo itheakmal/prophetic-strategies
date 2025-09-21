@@ -13,7 +13,7 @@ export const EVENT = {
 		"A coalition in Makkah formed to uphold justice after an injustice against a Yemeni merchant. Young Muhammad (ﷺ) participated and later praised such a pact.",
 	quote: {
 		text: "I witnessed a pact in the house of Ibn Jud'ān; if I were called to it in Islam, I would respond.",
-		source: "[Insert hadith/biography ref from your transcripts]",
+		source: "[Insert hadith/biography ref]",
 	},
 	deeper: [
 		"Social conditions: oligarchic trade networks; weak legal recourse for outsiders.",
@@ -59,7 +59,7 @@ export const EVENT = {
 			],
 			correctIndex: 0,
 			explanation:
-				"The moral core was justice and collective responsibility beyond narrow tribal interest. [Replace with transcript citation]",
+				"The moral core was justice and collective responsibility beyond narrow tribal interest. [citation]",
 		},
 		reaction: {
 			prompt: "How did the Prophet ﷺ respond in that context?",
@@ -71,7 +71,7 @@ export const EVENT = {
 			],
 			correctIndex: 0,
 			explanation:
-				"He affirmed the pact's ethos of justice and said he would support it even later. [Replace with transcript citation]",
+				"He affirmed the pact's ethos of justice and said he would support it even later. [citation]",
 		},
 	},
 } as const;

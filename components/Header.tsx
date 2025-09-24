@@ -4,45 +4,42 @@ import Link from "next/link";
 
 export default function Header() {
 	return (
-		<header className="mb-6 flex items-center justify-between rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-			<Link
-				href="/"
-				className="text-lg font-serif font-semibold text-stone-900"
-			>
-				Seerah App
-			</Link>
-			<nav className="flex items-center gap-3 text-sm">
+		<header className="mb-8 card p-6">
+			<div className="flex items-center justify-between">
 				<Link
 					href="/"
-					className="rounded-lg px-3 py-1 text-stone-700 hover:bg-stone-100"
+					className="text-2xl font-serif font-bold text-stone-900 hover:text-amber-600 transition-colors duration-300"
 				>
-					Home
+					Seerah
+					<span className="block text-sm font-normal text-stone-600">Sacred Journey</span>
 				</Link>
-				<Link
-					href="/events/hilf-al-fudul"
-					className="rounded-lg px-3 py-1 text-stone-700 hover:bg-stone-100"
-				>
-					Hilf al-Fudul
-				</Link>
-				<Link
-					href="/events/nabuwah"
-					className="rounded-lg px-3 py-1 text-stone-700 hover:bg-stone-100"
-				>
-					Nabuwah
-				</Link>
-				<Link
-					href="/tribes"
-					className="rounded-lg px-3 py-1 text-stone-700 hover:bg-stone-100"
-				>
-					Tribes
-				</Link>
-				<Link
-					href="/map"
-					className="rounded-lg px-3 py-1 text-stone-700 hover:bg-stone-100"
-				>
-					Map
-				</Link>
-			</nav>
+				<nav className="flex items-center gap-1 text-sm">
+					<Link
+						href="/"
+						className="rounded-lg px-4 py-2 text-stone-700 hover:bg-stone-100 hover:text-stone-900 transition-all duration-200 font-medium"
+					>
+						Home
+					</Link>
+					<Link
+						href="/importance"
+						className="rounded-lg px-4 py-2 text-stone-700 hover:bg-stone-100 hover:text-stone-900 transition-all duration-200 font-medium"
+					>
+						Why Seerah?
+					</Link>
+					<Link
+						href="/tribes"
+						className="rounded-lg px-4 py-2 text-stone-700 hover:bg-stone-100 hover:text-stone-900 transition-all duration-200 font-medium"
+					>
+						Tribes
+					</Link>
+					<Link
+						href="/map"
+						className="rounded-lg px-4 py-2 text-stone-700 hover:bg-stone-100 hover:text-stone-900 transition-all duration-200 font-medium"
+					>
+						Map
+					</Link>
+				</nav>
+			</div>
 		</header>
 	);
 }

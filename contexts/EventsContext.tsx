@@ -35,6 +35,7 @@ export type EventAction =
   | { type: 'SET_MEDIA_INDEX'; payload: number }
   | { type: 'RESET_EVENT_STATE' }
   | { type: 'LOAD_STATE'; payload: Partial<EventState> }
+  | { type: 'SWITCH_EVENT'; payload: string }
 
 // Initial state
 const initialState: EventState = {
@@ -56,6 +57,19 @@ function eventsReducer(state: EventState, action: EventAction): EventState {
   switch (action.type) {
     case 'SET_CURRENT_EVENT':
       return { ...state, currentEventId: action.payload }
+    
+    case 'SWITCH_EVENT':
+      return { 
+        ...state, 
+        currentEventId: action.payload,
+        choice: null,
+        answerIndex: null,
+        answerChecked: false,
+        thinkDeeper: false,
+        journal: '',
+        savedAt: null,
+        mediaIndex: 0
+      }
     
     case 'SET_CHOICE':
       return { ...state, choice: action.payload }
@@ -182,6 +196,7 @@ export function useEventActions() {
     setJournal: (journal: string) => dispatch({ type: 'SET_JOURNAL', payload: journal }),
     setSavedAt: (savedAt: string | null) => dispatch({ type: 'SET_SAVED_AT', payload: savedAt }),
     setMediaIndex: (index: number) => dispatch({ type: 'SET_MEDIA_INDEX', payload: index }),
-    resetEventState: () => dispatch({ type: 'RESET_EVENT_STATE' })
+    resetEventState: () => dispatch({ type: 'RESET_EVENT_STATE' }),
+    switchEvent: (eventId: string) => dispatch({ type: 'SWITCH_EVENT', payload: eventId })
   }
 }

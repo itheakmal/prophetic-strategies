@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Section from "./Section";
-import { EVENT } from "@/data/event";
+import { getEventBySlug, EVENTS } from "@/data/event";
 import MediaCarousel from "./MediaCarousel";
 import React from "react";
 import SidebarGallery from "./SidebarGallery";
@@ -12,27 +12,49 @@ import { useEvents, useEventActions } from "@/contexts/EventsContext";
 export default function AppSidebar() {
   const { state } = useEvents()
   const { setMediaIndex } = useEventActions()
+  
+  const event = getEventBySlug(state.currentEventId)
 
 
 
 	return (
-		<aside className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-			<h3 className="mb-2 text-sm font-semibold text-stone-800">Quick Links</h3>
-			<ul className="space-y-2 text-sm">
-				<li>
-					<Link
-						className="text-stone-700 hover:underline"
-						href="/events/hilf-al-fudul"
-					>
-						Hilf al-Fudul
-					</Link>
-				</li>
-				<li>
-					<Link className="pointer-events-none text-stone-400" href="#">
-						Event 2 (coming soon)
-					</Link>
-				</li>
-			</ul>
+		<aside className="card p-6">
+			<div className="mb-6">
+				<div className="flex items-center gap-3 mb-4">
+					<div className="w-1 h-6 bg-gradient-to-b from-amber-400 to-amber-600 rounded-full"></div>
+					<h3 className="text-lg font-serif font-bold text-stone-900">Quick Links</h3>
+				</div>
+				<ul className="space-y-3">
+					{EVENTS.map((event) => (
+						<li key={event.slug}>
+							<Link
+								className={`group block rounded-xl p-4 transition-all duration-300 ${
+									event.status === 'Live' 
+										? 'bg-gradient-to-br from-stone-50 to-stone-100/50 hover:from-amber-50 hover:to-amber-100/50 hover:shadow-md hover:-translate-y-1 border border-stone-200 hover:border-amber-300' 
+										: 'bg-stone-100/50 text-stone-400 cursor-not-allowed border border-stone-200'
+								}`}
+								href={event.status === 'Live' ? event.href as any : '#'}
+							>
+								<div className="flex items-center justify-between">
+									<div>
+										<div className="font-medium text-stone-800 group-hover:text-amber-800 transition-colors duration-300">
+											{event.title}
+										</div>
+										<div className="text-xs text-stone-500 mt-1">
+											{event.location} • {event.era}
+										</div>
+									</div>
+									{event.status === 'Live' ? (
+										<div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+									) : (
+										<div className="text-xs text-stone-400">Soon</div>
+									)}
+								</div>
+							</Link>
+						</li>
+					))}
+				</ul>
+			</div>
 
 			{/* TODO(back-end): Replace static links with a DB-driven event list:
          - fetch('/api/events') and map results to links
@@ -42,17 +64,23 @@ export default function AppSidebar() {
         {/* <div className="grid gap-5 md:grid-cols-3"> */}
           
           <div className="space-y-3">
-            {EVENT.media && EVENT.media.length > 0 && (
-              <SidebarGallery items={EVENT.media as any} currentIndex={state.mediaIndex} onSelect={setMediaIndex} />
+            {event && event.media && event.media.length > 0 && (
+              <SidebarGallery items={event.media as any} currentIndex={state.mediaIndex} onSelect={setMediaIndex} />
             )}
-            <Details summary="Social conditions in Makkah">{EVENT.deeper[0]}</Details>
-            <Details summary="Tribal dynamics">{EVENT.deeper[1]}</Details>
-            <Details summary="Think Deeper (scholarly notes)">
-              <ul className="list-disc pl-5">
-                <li>{EVENT.deeper[2]}</li>
-                <li>Insert authenticated hadith/biographical references here with exact wording & citations.</li>
-              </ul>
-            </Details>
+            {event && event.deeper.length > 0 && (
+              <>
+                <Details summary="Social conditions in Makkah">{event.deeper[0]}</Details>
+                {event.deeper[1] && <Details summary="Tribal dynamics">{event.deeper[1]}</Details>}
+                {event.deeper[2] && (
+                  <Details summary="Think Deeper (scholarly notes)">
+                    <ul className="list-disc pl-5">
+                      <li>{event.deeper[2]}</li>
+                      <li>Insert authenticated hadith/biographical references here with exact wording & citations.</li>
+                    </ul>
+                  </Details>
+                )}
+              </>
+            )}
           </div>
         {/* </div> */}
       {/* </Section> */}

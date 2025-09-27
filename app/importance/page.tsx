@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import ExpandableCard from '../../components/ExpandableCard';
 
 export default function ImportancePage() {
   return (
@@ -44,222 +45,217 @@ export default function ImportancePage() {
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Pillar 1 */}
-          <div className="card p-8 fade-in-up stagger-1 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-              Divine Guidance
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              The Prophet (ﷺ) was the living embodiment of the Quran. Studying his life 
-              reveals how divine revelation translates into practical wisdom for daily living.
-            </p>
-          </div>
+            }
+            title="Divine Guidance"
+            summary="The Prophet (ﷺ) was the living embodiment of the Quran, showing how divine revelation translates into practical wisdom."
+            fullContent="Studying his life reveals how divine revelation translates into practical wisdom for daily living, from personal conduct to community leadership. Every action and decision of the Prophet (ﷺ) was guided by divine wisdom, making his life a perfect example for all believers."
+            gradientFrom="from-amber-400"
+            gradientTo="to-amber-600"
+            staggerClass="stagger-1"
+          />
 
           {/* Pillar 2 */}
-          <div className="card p-8 fade-in-up stagger-2 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-              Perfect Character
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              Known as "the walking Quran," the Prophet (ﷺ) demonstrated perfect moral 
-              character in every situation—from family life to leadership challenges.
-            </p>
-          </div>
+            }
+            title="Perfect Character"
+            summary="Known as 'the walking Quran,' the Prophet (ﷺ) demonstrated perfect moral character in every situation."
+            fullContent="From family life to leadership challenges, the Prophet (ﷺ) showed exemplary character that transcended all circumstances. His patience, kindness, justice, and wisdom set the standard for human excellence, making him the perfect role model for all aspects of life."
+            gradientFrom="from-emerald-400"
+            gradientTo="to-emerald-600"
+            staggerClass="stagger-2"
+          />
 
           {/* Pillar 3 */}
-          <div className="card p-8 fade-in-up stagger-3 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-              Timeless Wisdom
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              The Prophet's (ﷺ) teachings transcend time and culture, offering 
-              solutions to modern challenges in governance, social justice, and warfare.
-            </p>
-          </div>
+            }
+            title="Timeless Wisdom"
+            summary="The Prophet's (ﷺ) teachings transcend time and culture, offering solutions to modern challenges."
+            fullContent="His teachings provide solutions to modern challenges in governance, social justice, and warfare. The principles he established remain relevant across all cultures and time periods, demonstrating the universal nature of divine guidance and human wisdom."
+            gradientFrom="from-purple-400"
+            gradientTo="to-purple-600"
+            staggerClass="stagger-3"
+          />
 
           {/* Pillar 4 */}
-          <div className="card p-8 fade-in-up stagger-4 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-red-400 to-red-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 15.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-              The Time of Treachery
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-            There will come upon the people years of deception, in which the liar is believed, and the truthful is disbelieved; the treacherous is trusted, and the trustworthy is considered treacherous; and the Ruwaybidah will speak.
-            </p>
-          </div>
+            }
+            title="The Time of Treachery"
+            summary="A prophetic warning about times when truth and falsehood become inverted in society."
+            fullContent="There will come upon the people years of deception, in which the liar is believed, and the truthful is disbelieved; the treacherous is trusted, and the trustworthy is considered treacherous; and the Ruwaybidah will speak. This hadith describes the moral confusion that will characterize the end times, making the study of authentic sources like Seerah even more crucial."
+            gradientFrom="from-red-400"
+            gradientTo="to-red-600"
+            staggerClass="stagger-4"
+          />
           
           {/* Pillar 5 */}
-          <div className="card p-8 fade-in-up stagger-5 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            Sunnah in Times of Division
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-            Verily he among you who lives long will see great controversy, so you must keep to my Sunnah and to the Sunnah of the Khulafa ar-Rashideen, those who guide to the right way. Cling to it stubbornly [with your molar teeth].
-            </p>
-          </div>
+            }
+            title="Sunnah in Times of Division"
+            summary="A prophetic instruction to hold fast to authentic guidance during times of controversy and division."
+            fullContent="Verily he among you who lives long will see great controversy, so you must keep to my Sunnah and to the Sunnah of the Khulafa ar-Rashideen, those who guide to the right way. Cling to it stubbornly [with your molar teeth]. This emphasizes the importance of following the authentic path during times of confusion and division."
+            gradientFrom="from-orange-400"
+            gradientTo="to-orange-600"
+            staggerClass="stagger-5"
+          />
           
           {/* Pillar 6 */}
-          <div className="card p-8 fade-in-up stagger-6 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-              The Fall of the Khilafah
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              While Abbasid Caliphate and The Khwarazmian Empire fought each other, a new threat emerged. Indeed, the disbelievers are allies of one another. But if you, O Muslims, do not also ally with one another, there will be fitnah and great corruption in the land.
-            </p>
-          </div>
+            }
+            title="The Fall of the Khilafah"
+            summary="Historical analysis of how internal conflicts weakened Muslim unity and enabled external threats."
+            fullContent="While Abbasid Caliphate and The Khwarazmian Empire fought each other, a new threat emerged. Indeed, the disbelievers are allies of one another. But if you, O Muslims, do not also ally with one another, there will be fitnah and great corruption in the land. This highlights the importance of unity in facing external challenges."
+            gradientFrom="from-indigo-400"
+            gradientTo="to-indigo-600"
+            staggerClass="stagger-6"
+          />
           
           {/* Pillar 7 */}
-          <div className="card p-8 fade-in-up stagger-7 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            Scholarly Response
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              They realized: Rasulullah ﷺ began his movement alone, in a society dominated by enemies, yet he was able to establish a global Ummah. So the question became: "How did he do it?" "What were his strategies?" "How can we replicate his approach today?"
-            </p>
-          </div>
+            }
+            title="Scholarly Response"
+            summary="Academic analysis of the Prophet's strategic approach to building a global community."
+            fullContent="They realized: Rasulullah ﷺ began his movement alone, in a society dominated by enemies, yet he was able to establish a global Ummah. So the question became: 'How did he do it?' 'What were his strategies?' 'How can we replicate his approach today?' This scholarly inquiry drives modern research into prophetic methodology."
+            gradientFrom="from-cyan-400"
+            gradientTo="to-cyan-600"
+            staggerClass="stagger-7"
+          />
           
           {/* Pillar 8 */}
-          <div className="card p-8 fade-in-up stagger-8 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-pink-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            One Event, Two Perspectives
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              Rasulullah ﷺ was praying in front of the Ka'bah when some placed intestine of camel on his back. Scholars analyzed it differently: Was he ﷺ praying an obligatory prayer? Did he repeat afterward? Is camel filth najis? Other scholars said: Why didn't he ﷺ call his companions? Why no retaliation? Why only du'ā'?
-            </p>
-          </div>
+            }
+            title="One Event, Two Perspectives"
+            summary="How different scholarly approaches can lead to varied interpretations of the same historical event."
+            fullContent="Rasulullah ﷺ was praying in front of the Ka'bah when some placed intestine of camel on his back. Scholars analyzed it differently: Was he ﷺ praying an obligatory prayer? Did he repeat afterward? Is camel filth najis? Other scholars said: Why didn't he ﷺ call his companions? Why no retaliation? Why only du'ā'? This demonstrates the complexity of scholarly analysis."
+            gradientFrom="from-pink-400"
+            gradientTo="to-pink-600"
+            staggerClass="stagger-8"
+          />
           
           {/* Pillar 9 */}
-          <div className="card p-8 fade-in-up stagger-9 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            Sun Tzu's "Art of War"
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              If you know your enemy and you know yourself, you will not be defeated in a hundred battles. If you know yourself but not your enemy, for every victory, there will also be a loss. And if you know neither yourself nor your enemy, you will lose every battle.
-            </p>
-          </div>
+            }
+            title="Sun Tzu's Art of War"
+            summary="Strategic principles that emphasize the importance of self-knowledge and understanding your opponent."
+            fullContent="If you know your enemy and you know yourself, you will not be defeated in a hundred battles. If you know yourself but not your enemy, for every victory, there will also be a loss. And if you know neither yourself nor your enemy, you will lose every battle. These timeless principles apply to all forms of strategic thinking."
+            gradientFrom="from-yellow-400"
+            gradientTo="to-yellow-600"
+            staggerClass="stagger-9"
+          />
           
           {/* Pillar 10 */}
-          <div className="card p-8 fade-in-up stagger-10 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-lime-400 to-lime-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            Western Experts
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              <strong>Pieter Van Ostaeyen</strong> - A Belgian Arabist and historian.<br />
-              <strong>Elizabeth Kendall</strong> - A British researcher and BBC analyst.<br />
-              <strong>Cole Bunzel</strong> - historian/Arabist; Fellow at the Hoover Institution
-            </p>
-          </div>
+            }
+            title="Western Experts"
+            summary="Prominent Western scholars who have studied Islamic history and strategic thinking."
+            fullContent="Pieter Van Ostaeyen - A Belgian Arabist and historian. Elizabeth Kendall - A British researcher and BBC analyst. Cole Bunzel - historian/Arabist; Fellow at the Hoover Institution. These experts provide valuable external perspectives on Islamic history and strategy."
+            gradientFrom="from-lime-400"
+            gradientTo="to-lime-600"
+            staggerClass="stagger-10"
+          />
           
           {/* Pillar 11 */}
-          <div className="card p-8 fade-in-up stagger-11 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            Educational Reform
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              After World War II, the United States implemented a new form of control: Curriculum engineering, abolished the traditional education system. In Germany: The same model was applied.
-            </p>
-          </div>
+            }
+            title="Educational Reform"
+            summary="Post-war changes in educational systems and their impact on traditional knowledge transmission."
+            fullContent="After World War II, the United States implemented a new form of control: Curriculum engineering, abolished the traditional education system. In Germany: The same model was applied. This systematic change affected how knowledge and values were transmitted to future generations."
+            gradientFrom="from-teal-400"
+            gradientTo="to-teal-600"
+            staggerClass="stagger-11"
+          />
          
           {/* Pillar 12 */}
-          <div className="card p-8 fade-in-up stagger-12 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-400 to-violet-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            Strategic Dispersal
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              Abu Dharr al-Ghifari رضي الله عنه. Rasulullah ﷺ met him before migrating to Madinah, He accepted Islam, But the Prophet ﷺ did not take him along to Madinah.
-            </p>
-          </div>
+            }
+            title="Strategic Dispersal"
+            summary="The Prophet's strategic approach to spreading the message through calculated placement of companions."
+            fullContent="Abu Dharr al-Ghifari رضي الله عنه. Rasulullah ﷺ met him before migrating to Madinah, He accepted Islam, But the Prophet ﷺ did not take him along to Madinah. This demonstrates the strategic thinking behind the placement of believers in different locations for maximum impact."
+            gradientFrom="from-violet-400"
+            gradientTo="to-violet-600"
+            staggerClass="stagger-12"
+          />
           
           {/* Pillar 13 */}
-          <div className="card p-8 fade-in-up stagger-13 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-slate-400 to-slate-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            Strategic Military Analysis
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              <strong>Russ Rodgers</strong>, a retired American military veteran who studied the life of Rasulullah ﷺ for military insight. He authored: <em>"The Generalship of Muhammad ﷺ"</em>. This book is taught in Western military academies and serves as a manual for modern asymmetric warfare.
-            </p>
-          </div>
+            }
+            title="Strategic Military Analysis"
+            summary="Western military analysis of the Prophet's strategic and tactical approaches to warfare."
+            fullContent="Russ Rodgers, a retired American military veteran who studied the life of Rasulullah ﷺ for military insight. He authored: 'The Generalship of Muhammad ﷺ'. This book is taught in Western military academies and serves as a manual for modern asymmetric warfare. This demonstrates the universal applicability of prophetic strategies."
+            gradientFrom="from-slate-400"
+            gradientTo="to-slate-600"
+            staggerClass="stagger-13"
+          />
 
           {/* Pillar 14 */}
-          <div className="card p-8 fade-in-up stagger-14 group hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <ExpandableCard
+            icon={
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-            </div>
-            <h3 className="text-2xl font-serif font-bold text-stone-900 mb-4">
-            Genghis Khan and Salahuddin Ayyubi
-            </h3>
-            <p className="text-stone-700 leading-relaxed">
-              There are clear parallels between: The early phase of Genghis Khan's rise, The initial mission of Rasulullah ﷺ, and The strategic brilliance of Salahuddin Ayyubi. His military genius is matched only by his diplomatic mastery.
-            </p>
-          </div>
+            }
+            title="Genghis Khan and Salahuddin Ayyubi"
+            summary="Comparative analysis of strategic approaches across different historical leaders and contexts."
+            fullContent="There are clear parallels between: The early phase of Genghis Khan's rise, The initial mission of Rasulullah ﷺ, and The strategic brilliance of Salahuddin Ayyubi. His military genius is matched only by his diplomatic mastery. These comparisons reveal universal principles of leadership and strategy."
+            gradientFrom="from-amber-400"
+            gradientTo="to-amber-600"
+            staggerClass="stagger-14"
+          />
           
         </div>
       </section>

@@ -2,7 +2,7 @@ import { EventData } from '../types';
 
 export const hilfAlFudul: EventData = {
   slug: 'hilf-al-fudul',
-  title: 'Hilf al-Fudul – Pact of the Virtuous',
+  title: 'Divine Prophetic Strategies – Pact of the Virtuous',
   location: 'Makkah',
   era: 'Pre-Prophethood',
   context:
@@ -24,7 +24,7 @@ export const hilfAlFudul: EventData = {
   media: [
     {
       type: 'image',
-      src: 'https://placehold.co/800x450?text=Hilf+al-Fudul+1',
+      src: 'https://placehold.co/800x450?text=Divine+Prophetic+Strategies+1',
       alt: 'Placeholder illustration 1',
     },
     {

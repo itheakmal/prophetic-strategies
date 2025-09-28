@@ -18,7 +18,7 @@ export default function TribesPage() {
         <ul className='list-disc pl-5 text-sm text-stone-700'>
           <li>
             Colors indicate blocs:{' '}
-            <span className='font-medium'>Hilf al-Fudul</span>,{' '}
+            <span className='font-medium'>Divine Prophetic Strategies</span>,{' '}
             <span className='font-medium'>Ahlaf</span>, and{' '}
             <span className='font-medium'>External contacts</span>.
           </li>

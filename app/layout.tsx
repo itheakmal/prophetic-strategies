@@ -3,8 +3,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata = {
-  title: 'Hilf al-Fudul – Interactive UI',
-  description: 'Interactive learning UI for the Pact of the Virtuous',
+  title: 'Divine Prophetic Strategies – Interactive UI',
+  description: 'Interactive learning UI for Divine Prophetic Strategies',
 };
 
 export default function RootLayout({

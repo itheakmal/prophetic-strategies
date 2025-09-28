@@ -1,4 +1,4 @@
-# Hilf al-Fudul – Interactive UI (Next.js + Tailwind v4)
+# Divine Prophetic Strategies – Interactive UI (Next.js + Tailwind v4)
 
 Up-to-date Next.js App Router project configured for **Tailwind CSS v4** using the new PostCSS plugin.
 

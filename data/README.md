@@ -1,6 +1,6 @@
 # Adding New Events Guide
 
-This guide explains how to add new events to the Hilf al-Fudul application. The event system is designed to be modular and easy to extend.
+This guide explains how to add new events to the Divine Prophetic Strategies application. The event system is designed to be modular and easy to extend.
 
 ## File Structure
 

@@ -1092,6 +1092,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"divine-prophetic-strategies@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "divine-prophetic-strategies@workspace:."
+  dependencies:
+    "@tailwindcss/postcss": "npm:4.1.13"
+    "@types/node": "npm:24.5.2"
+    "@types/react": "npm:19.1.13"
+    d3: "npm:^7.9.0"
+    framer-motion: "npm:12.23.19"
+    lucide-react: "npm:0.544.0"
+    maplibre-gl: "npm:^5.7.0"
+    next: "npm:15.5.4"
+    postcss: "npm:8.5.6"
+    prettier: "npm:^3.6.2"
+    react: "npm:19.1.1"
+    react-dom: "npm:19.1.1"
+    resend: "npm:^6.1.0"
+    tailwindcss: "npm:4.1.13"
+    typescript: "npm:5.9.2"
+  languageName: unknown
+  linkType: soft
+
 "earcut@npm:^3.0.2":
   version: 3.0.2
   resolution: "earcut@npm:3.0.2"
@@ -1158,27 +1180,6 @@ __metadata:
   checksum: 10c0/386d011a553e02bc594ac2ca0bd6d9e4c22d7fa8cfbfc448a6d148c59ea881b092db9dbe3547ae4b88e55f1b01f7c4a2ecc53b310c042793e63aa44cf6c257f2
   languageName: node
   linkType: hard
-
-"hilf-al-fudul-ui-next-v4@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "hilf-al-fudul-ui-next-v4@workspace:."
-  dependencies:
-    "@tailwindcss/postcss": "npm:4.1.13"
-    "@types/node": "npm:24.5.2"
-    "@types/react": "npm:19.1.13"
-    d3: "npm:^7.9.0"
-    framer-motion: "npm:12.23.19"
-    lucide-react: "npm:0.544.0"
-    maplibre-gl: "npm:^5.7.0"
-    next: "npm:15.5.4"
-    postcss: "npm:8.5.6"
-    prettier: "npm:^3.6.2"
-    react: "npm:19.1.1"
-    react-dom: "npm:19.1.1"
-    tailwindcss: "npm:4.1.13"
-    typescript: "npm:5.9.2"
-  languageName: unknown
-  linkType: soft
 
 "iconv-lite@npm:0.6":
   version: 0.6.3
@@ -1592,6 +1593,18 @@ __metadata:
   version: 19.1.1
   resolution: "react@npm:19.1.1"
   checksum: 10c0/8c9769a2dfd02e603af6445058325e6c8a24b47b185d0e461f66a6454765ddcaecb3f0a90184836c68bb509f3c38248359edbc42f0d07c23eb500a5c30c87b4e
+  languageName: node
+  linkType: hard
+
+"resend@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "resend@npm:6.1.0"
+  peerDependencies:
+    "@react-email/render": ^1.1.0
+  peerDependenciesMeta:
+    "@react-email/render":
+      optional: true
+  checksum: 10c0/cfa07559407a811af3844d4eacca4e96ae7d530e8a6577998d6a42133498e36a5cbb373ad65da834cee7da9b633ecef123526d3952c637436e967affbb28051a
   languageName: node
   linkType: hard
 

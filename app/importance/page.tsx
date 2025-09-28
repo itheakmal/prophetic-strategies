@@ -526,7 +526,7 @@ export default function ImportancePage() {
               href='/events/hilf-al-fudul'
               className='inline-flex items-center px-8 py-4 border-2 border-stone-300 text-stone-700 rounded-xl hover:border-stone-400 hover:bg-stone-50 transition-all duration-300 font-medium text-lg'
             >
-              Start with Hilf al-Fudul
+              Start with Divine Prophetic Strategies
             </Link>
           </div>
         </div>

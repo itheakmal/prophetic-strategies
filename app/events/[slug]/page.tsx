@@ -108,7 +108,7 @@ export default function EventPage({ params }: EventPageProps) {
             </div>
           )}
           {event.quotes.map((quote, index) => (
-            <>
+            <div key={index}>
               <h3 className='text-lg font-serif font-bold text-stone-900'>
                 {quote.subtitle}
               </h3>
@@ -133,7 +133,7 @@ export default function EventPage({ params }: EventPageProps) {
                 <div className='absolute top-4 right-4 w-16 h-16 bg-amber-200/20 rounded-full'></div>
                 <div className='absolute bottom-4 left-4 w-12 h-12 bg-emerald-200/20 rounded-full'></div>
               </div>
-            </>
+            </div>
           ))}
         </div>
       </Section>
@@ -541,8 +541,7 @@ export default function EventPage({ params }: EventPageProps) {
 
       <div className='text-center'>
         <p className='text-sm text-stone-500 italic'>
-          Replace placeholder texts with authenticated quotes and citations from
-          your Sessions corpus.
+          Please contact us if you find any mistakes or have any feedback or suggestions.
         </p>
       </div>
     </div>

@@ -1,14 +1,9 @@
 // Export all types
 export * from './types';
 
-// Export event cards
-export { EVENTS } from './eventsCards';
+// Event cards are now generated dynamically using getEventCards() function
 
 // Export utils and event data
-export { EVENTS_DATA, getEventBySlug } from './utils';
+export { EVENTS_DATA, getEventBySlug, getEventCards } from './utils';
 
-// Export individual events (for direct access if needed)
-export { arabiaBeforeIslam } from './events/arabia-before-islam';
-export { hilfAlFudul } from './events/hilf-al-fudul';
-export { reconstructionOfTheKabah } from './events/reconstruction-of-the-kabah';
-export { nabuwah } from './events/nabuwah';
+// Individual events are not exported - use getEventBySlug() or getEventCards() instead

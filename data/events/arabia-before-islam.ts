@@ -7,6 +7,8 @@ export const arabiaBeforeIslam: EventData = {
   era: 'Pre-Prophethood',
   context:
     'The Arabs were the first recipients of revelation, we must look at their social norms, political landscape, moral values, and the governing structure of pre Islamic Arabia.',
+  summary:
+    'The Arabian Peninsula lacked a central government. Neighboring superpowers, Roman and Sassanian used Arab client tribes as buffers and proxies: Ghassan for the Romans and Lakhmids for the Persians. Makkah functioned as a revered, central node due to the Kaʿbah, drawing tribes for ritual and trade despite widespread fragmentation and inter-tribal raiding.',
   quotes: [
     {
       subtitle: 'Quranic Verse',

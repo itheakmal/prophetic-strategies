@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Section from './Section';
-import { getEventBySlug, EVENTS } from '@/data';
+import { getEventBySlug, getEventCards } from '@/data';
 import MediaCarousel from './MediaCarousel';
 import React from 'react';
 import SidebarGallery from './SidebarGallery';
@@ -55,7 +55,7 @@ export default function AppSidebar() {
           </h3>
         </div>
         <ul className='space-y-3'>
-          {EVENTS.map(event => (
+          {getEventCards().map(event => (
             <li key={event.slug}>
               <Link
                 className={`group block rounded-xl p-4 transition-all duration-300 ${

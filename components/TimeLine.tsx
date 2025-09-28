@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { EVENTS } from '@/data';
+import { getEventCards } from '@/data';
 
 export default function Timeline() {
   return (
     <div className='grid gap-6 md:grid-cols-2'>
-      {EVENTS.map((ev, index) => (
+      {getEventCards().map((ev, index) => (
         <Link
           key={ev.slug}
           href={ev.href as any}

@@ -96,7 +96,7 @@ export default function EventPage({ params }: EventPageProps) {
       )}
 
       {/* 1) Event Presentation */}
-      <Section title='Sacred Quotes' subtitle={event.quotes[0]?.subtitle}>
+      <Section title='Sacred Quotes'>
         <div className='space-y-6'>
           {event.media && event.media.length > 0 && (
             <div className='fade-in-up stagger-1'>
@@ -108,241 +108,249 @@ export default function EventPage({ params }: EventPageProps) {
             </div>
           )}
           {event.quotes.map((quote, index) => (
-            <div
-              key={index}
-              className='relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 via-amber-100/50 to-emerald-50 p-8 fade-in-up stagger-2'
-            >
-              <div className='relative z-10'>
-                <blockquote className='text-lg md:text-xl leading-relaxed text-amber-900 font-medium italic mb-4'>
-                  "{quote.text}"
-                </blockquote>
-                <cite className='text-sm text-amber-700 font-medium'>
-                  — {quote.source}
-                </cite>
-                {quote.details && (
-                  <p className='mt-4 text-sm text-amber-800 leading-relaxed'>
-                    {quote.details}
-                  </p>
-                )}
+            <>
+              <h3 className='text-lg font-serif font-bold text-stone-900'>
+                {quote.subtitle}
+              </h3>
+              <div
+                key={index}
+                className='relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 via-amber-100/50 to-emerald-50 p-8 fade-in-up stagger-2'
+              >
+                <div className='relative z-10'>
+                  <blockquote className='text-lg md:text-xl leading-relaxed text-amber-900 font-medium italic mb-4'>
+                    "{quote.text}"
+                  </blockquote>
+                  <cite className='text-sm text-amber-700 font-medium'>
+                    — {quote.source}
+                  </cite>
+                  {quote.details && (
+                    <p className='mt-4 text-sm text-amber-800 leading-relaxed'>
+                      {quote.details}
+                    </p>
+                  )}
+                </div>
+                {/* Decorative elements */}
+                <div className='absolute top-4 right-4 w-16 h-16 bg-amber-200/20 rounded-full'></div>
+                <div className='absolute bottom-4 left-4 w-12 h-12 bg-emerald-200/20 rounded-full'></div>
               </div>
-              {/* Decorative elements */}
-              <div className='absolute top-4 right-4 w-16 h-16 bg-amber-200/20 rounded-full'></div>
-              <div className='absolute bottom-4 left-4 w-12 h-12 bg-emerald-200/20 rounded-full'></div>
-            </div>
+            </>
           ))}
         </div>
       </Section>
 
       {/* 2) Interactive Reflection */}
-      <Section
-        title='Choose Your Path'
-        subtitle='Was this an action or a reaction?'
-      >
-        <div className='flex flex-col gap-4 md:flex-row'>
-          <PillButton
-            ariaLabel='Choose Action'
-            onClick={() => setChoice('action')}
-            selected={state.choice === 'action'}
+      {event.followups && (
+        <>
+          <Section
+            title='Choose Your Path'
+            subtitle='Was this an action or a reaction?'
           >
-            ✨ Action
-          </PillButton>
-          <PillButton
-            ariaLabel='Choose Reaction'
-            onClick={() => setChoice('reaction')}
-            selected={state.choice === 'reaction'}
-          >
-            🔁 Reaction
-          </PillButton>
-        </div>
-      </Section>
-
-      {/* 3) Follow-up Question */}
-      {state.choice && (
-        <Section
-          title='Deep Reflection'
-          subtitle={
-            state.choice === 'action'
-              ? 'Why did he take this action?'
-              : 'How did he respond?'
-          }
-        >
-          <div className='space-y-6'>
-            <div className='relative overflow-hidden rounded-2xl bg-gradient-to-br from-stone-50 to-stone-100/50 p-6'>
-              <p className='text-lg font-medium text-stone-800 mb-6'>
-                {event.followups[state.choice].prompt}
-              </p>
-
-              {event.followups[state.choice].type === 'mcq' && (
-                <div className='grid gap-4 md:grid-cols-2'>
-                  {event.followups[state.choice].choices.map(
-                    (c: string, idx: number) => (
-                      <label
-                        key={idx}
-                        className={`group flex cursor-pointer items-start gap-4 rounded-xl border-2 p-4 transition-all duration-300 ${
-                          state.answerIndex === idx
-                            ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-amber-100 shadow-lg scale-105'
-                            : 'border-stone-200 bg-white hover:border-amber-300 hover:shadow-md hover:-translate-y-1'
-                        }`}
-                      >
-                        <input
-                          type='radio'
-                          name='followup'
-                          className='mt-1 w-5 h-5 text-amber-600'
-                          checked={state.answerIndex === idx}
-                          onChange={() => setAnswerIndex(idx)}
-                        />
-                        <span className='text-stone-800 font-medium group-hover:text-amber-700 transition-colors duration-300'>
-                          {c}
-                        </span>
-                      </label>
-                    )
-                  )}
-                </div>
-              )}
-
-              {event.followups[state.choice].type === 'dropdown' && (
-                <div className='max-w-md'>
-                  <select
-                    className='w-full rounded-xl border-2 border-stone-300 bg-white p-4 text-stone-800 focus:border-amber-500 focus:outline-none transition-colors duration-300'
-                    value={state.answerIndex ?? ''}
-                    onChange={e => setAnswerIndex(Number(e.target.value))}
-                  >
-                    <option value='' disabled>
-                      Select a reason…
-                    </option>
-                    {event.followups[state.choice].choices.map(
-                      (c: string, idx: number) => (
-                        <option key={idx} value={idx}>
-                          {c}
-                        </option>
-                      )
-                    )}
-                  </select>
-                </div>
-              )}
-
-              <div className='flex flex-wrap gap-3'>
-                <button
-                  onClick={() => setAnswerChecked(true)}
-                  disabled={state.answerIndex === null}
-                  className='rounded-xl bg-stone-900 px-6 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:bg-stone-800 transition-colors duration-300'
-                >
-                  Check Answer
-                </button>
-                <button
-                  onClick={() => setThinkDeeper(!state.thinkDeeper)}
-                  className='rounded-xl border-2 border-stone-300 bg-white px-6 py-3 text-sm font-bold text-stone-800 hover:bg-stone-100 hover:border-amber-300 transition-all duration-300'
-                >
-                  {state.thinkDeeper ? 'Hide' : 'Think Deeper'}
-                </button>
-              </div>
-            </div>
-
-            {state.answerChecked && (
-              <div
-                className={`rounded-2xl p-6 text-sm border-2 ${
-                  isAnswerCorrect()
-                    ? 'bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-900 border-emerald-300'
-                    : 'bg-gradient-to-br from-rose-50 to-rose-100 text-rose-900 border-rose-300'
-                }`}
+            <div className='flex flex-col gap-4 md:flex-row'>
+              <PillButton
+                ariaLabel='Choose Action'
+                onClick={() => setChoice('action')}
+                selected={state.choice === 'action'}
               >
-                <div className='flex items-center gap-3 mb-3'>
+                ✨ Action
+              </PillButton>
+              <PillButton
+                ariaLabel='Choose Reaction'
+                onClick={() => setChoice('reaction')}
+                selected={state.choice === 'reaction'}
+              >
+                🔁 Reaction
+              </PillButton>
+            </div>
+          </Section>
+
+          {/* 3) Follow-up Question */}
+          {state.choice && (
+            <Section
+              title='Deep Reflection'
+              subtitle={
+                state.choice === 'action'
+                  ? 'Why did he take this action?'
+                  : 'How did he respond?'
+              }
+            >
+              <div className='space-y-6'>
+                <div className='relative overflow-hidden rounded-2xl bg-gradient-to-br from-stone-50 to-stone-100/50 p-6'>
+                  <p className='text-lg font-medium text-stone-800 mb-6'>
+                    {event.followups[state.choice].prompt}
+                  </p>
+
+                  {event.followups[state.choice].type === 'mcq' && (
+                    <div className='grid gap-4 md:grid-cols-2'>
+                      {event.followups[state.choice].choices.map(
+                        (c: string, idx: number) => (
+                          <label
+                            key={idx}
+                            className={`group flex cursor-pointer items-start gap-4 rounded-xl border-2 p-4 transition-all duration-300 ${
+                              state.answerIndex === idx
+                                ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-amber-100 shadow-lg scale-105'
+                                : 'border-stone-200 bg-white hover:border-amber-300 hover:shadow-md hover:-translate-y-1'
+                            }`}
+                          >
+                            <input
+                              type='radio'
+                              name='followup'
+                              className='mt-1 w-5 h-5 text-amber-600'
+                              checked={state.answerIndex === idx}
+                              onChange={() => setAnswerIndex(idx)}
+                            />
+                            <span className='text-stone-800 font-medium group-hover:text-amber-700 transition-colors duration-300'>
+                              {c}
+                            </span>
+                          </label>
+                        )
+                      )}
+                    </div>
+                  )}
+
+                  {event.followups[state.choice].type === 'dropdown' && (
+                    <div className='max-w-md'>
+                      <select
+                        className='w-full rounded-xl border-2 border-stone-300 bg-white p-4 text-stone-800 focus:border-amber-500 focus:outline-none transition-colors duration-300'
+                        value={state.answerIndex ?? ''}
+                        onChange={e => setAnswerIndex(Number(e.target.value))}
+                      >
+                        <option value='' disabled>
+                          Select a reason…
+                        </option>
+                        {event.followups[state.choice].choices.map(
+                          (c: string, idx: number) => (
+                            <option key={idx} value={idx}>
+                              {c}
+                            </option>
+                          )
+                        )}
+                      </select>
+                    </div>
+                  )}
+
+                  <div className='flex flex-wrap gap-3'>
+                    <button
+                      onClick={() => setAnswerChecked(true)}
+                      disabled={state.answerIndex === null}
+                      className='rounded-xl bg-stone-900 px-6 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:bg-stone-800 transition-colors duration-300'
+                    >
+                      Check Answer
+                    </button>
+                    <button
+                      onClick={() => setThinkDeeper(!state.thinkDeeper)}
+                      className='rounded-xl border-2 border-stone-300 bg-white px-6 py-3 text-sm font-bold text-stone-800 hover:bg-stone-100 hover:border-amber-300 transition-all duration-300'
+                    >
+                      {state.thinkDeeper ? 'Hide' : 'Think Deeper'}
+                    </button>
+                  </div>
+                </div>
+
+                {state.answerChecked && (
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      isAnswerCorrect() ? 'bg-emerald-500' : 'bg-rose-500'
+                    className={`rounded-2xl p-6 text-sm border-2 ${
+                      isAnswerCorrect()
+                        ? 'bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-900 border-emerald-300'
+                        : 'bg-gradient-to-br from-rose-50 to-rose-100 text-rose-900 border-rose-300'
                     }`}
                   >
-                    {isAnswerCorrect() ? (
-                      <svg
-                        className='w-5 h-5 text-white'
-                        fill='none'
-                        stroke='currentColor'
-                        viewBox='0 0 24 24'
+                    <div className='flex items-center gap-3 mb-3'>
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          isAnswerCorrect() ? 'bg-emerald-500' : 'bg-rose-500'
+                        }`}
                       >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth={2}
-                          d='M5 13l4 4L19 7'
-                        />
-                      </svg>
-                    ) : (
-                      <svg
-                        className='w-5 h-5 text-white'
-                        fill='none'
-                        stroke='currentColor'
-                        viewBox='0 0 24 24'
-                      >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth={2}
-                          d='M6 18L18 6M6 6l12 12'
-                        />
-                      </svg>
-                    )}
+                        {isAnswerCorrect() ? (
+                          <svg
+                            className='w-5 h-5 text-white'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M5 13l4 4L19 7'
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            className='w-5 h-5 text-white'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M6 18L18 6M6 6l12 12'
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      <p className='font-bold text-lg'>
+                        {isAnswerCorrect() ? 'Correct! ✔' : "Let's revisit ✧"}
+                      </p>
+                    </div>
+                    <p className='leading-6'>
+                      {event.followups[state.choice].explanation}
+                    </p>
                   </div>
-                  <p className='font-bold text-lg'>
-                    {isAnswerCorrect() ? 'Correct! ✔' : "Let's revisit ✧"}
-                  </p>
-                </div>
-                <p className='leading-6'>
-                  {event.followups[state.choice].explanation}
-                </p>
-              </div>
-            )}
+                )}
 
-            {state.thinkDeeper && (
-              <div className='rounded-2xl border-2 border-stone-200 bg-gradient-to-br from-stone-50 to-stone-100/50 p-6'>
-                <div className='flex items-center gap-3 mb-4'>
-                  <div className='w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center'>
-                    <svg
-                      className='w-5 h-5 text-white'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
-                      />
-                    </svg>
+                {state.thinkDeeper && (
+                  <div className='rounded-2xl border-2 border-stone-200 bg-gradient-to-br from-stone-50 to-stone-100/50 p-6'>
+                    <div className='flex items-center gap-3 mb-4'>
+                      <div className='w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center'>
+                        <svg
+                          className='w-5 h-5 text-white'
+                          fill='none'
+                          stroke='currentColor'
+                          viewBox='0 0 24 24'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth={2}
+                            d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+                          />
+                        </svg>
+                      </div>
+                      <h4 className='font-bold text-lg text-stone-800'>
+                        Scholarly Interpretations
+                      </h4>
+                    </div>
+                    <ul className='space-y-3 text-stone-700'>
+                      <li className='flex items-start gap-3'>
+                        <div className='w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0'></div>
+                        <span>
+                          Compare civil pacts vs. state law: how prophetic
+                          endorsement shapes civic virtue.
+                        </span>
+                      </li>
+                      <li className='flex items-start gap-3'>
+                        <div className='w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0'></div>
+                        <span>
+                          Map to maqāṣid al-sharīʿah and prophetic values
+                          (ʿadl/justice, ḥifẓ al-ḥuqūq/rights).
+                        </span>
+                      </li>
+                      <li className='flex items-start gap-3'>
+                        <div className='w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0'></div>
+                        <span>
+                          Insert authenticated citations from your Sessions
+                          corpus here.
+                        </span>
+                      </li>
+                    </ul>
                   </div>
-                  <h4 className='font-bold text-lg text-stone-800'>
-                    Scholarly Interpretations
-                  </h4>
-                </div>
-                <ul className='space-y-3 text-stone-700'>
-                  <li className='flex items-start gap-3'>
-                    <div className='w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0'></div>
-                    <span>
-                      Compare civil pacts vs. state law: how prophetic
-                      endorsement shapes civic virtue.
-                    </span>
-                  </li>
-                  <li className='flex items-start gap-3'>
-                    <div className='w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0'></div>
-                    <span>
-                      Map to maqāṣid al-sharīʿah and prophetic values
-                      (ʿadl/justice, ḥifẓ al-ḥuqūq/rights).
-                    </span>
-                  </li>
-                  <li className='flex items-start gap-3'>
-                    <div className='w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0'></div>
-                    <span>
-                      Insert authenticated citations from your Sessions corpus
-                      here.
-                    </span>
-                  </li>
-                </ul>
+                )}
               </div>
-            )}
-          </div>
-        </Section>
+            </Section>
+          )}
+        </>
       )}
-
       {/* 4) Reflection & Takeaway */}
       <Section
         title='Wisdom & Application'

@@ -7,6 +7,8 @@ export const hilfAlFudul: EventData = {
   era: 'Pre-Prophethood',
   context:
     'A coalition in Makkah formed to uphold justice after an injustice against a Yemeni merchant. Young Muhammad (ﷺ) participated and later praised such a pact.',
+  summary:
+    'A coalition formed in Makkah to uphold justice after an injustice against a merchant — an early model of civic virtue.',
   quotes: [
     {
       subtitle: 'A timeless message from the Prophet (ﷺ)',

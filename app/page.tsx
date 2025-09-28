@@ -2,7 +2,7 @@
 
 import Timeline from '@/components/TimeLine';
 import Link from 'next/link';
-import { EVENTS } from '@/data';
+import { getEventCards } from '@/data';
 
 export default function LandingPage() {
   return (
@@ -55,7 +55,7 @@ export default function LandingPage() {
       <section className='grid grid-cols-1 md:grid-cols-3 gap-6'>
         <div className='card p-6 text-center fade-in-up stagger-1'>
           <div className='text-3xl font-bold text-amber-600 mb-2'>
-            {EVENTS.length}
+            {getEventCards().length}
           </div>
           <div className='text-stone-700 font-medium'>Interactive Events</div>
           <div className='text-sm text-stone-500 mt-1'>Live experiences</div>

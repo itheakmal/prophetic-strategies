@@ -7,6 +7,8 @@ export const nabuwah: EventData = {
   era: 'Prophethood',
   context:
     'Prophet Muhammad (ﷺ) received the first revelation from Allah through the angel Gabriel (Jibril) in the cave of Hira. This marked the beginning of his prophethood and the start of Islam.',
+  summary:
+    'Prophet Muhammad (ﷺ) received the first revelation from Allah through the angel Gabriel (Jibril) in the cave of Hira.',
   quotes: [
     {
       subtitle: 'Quranic Verse',

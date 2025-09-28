@@ -7,14 +7,14 @@ This guide explains how to add new events to the Hilf al-Fudul application. The 
 ```
 data/
 ├── types.ts                    # TypeScript interfaces and types
-├── eventsCards.ts             # Event cards for timeline/listing
 ├── utils.ts                   # Helper functions and event aggregation
 ├── index.ts                   # Main export file
 └── events/                    # Individual event files
     ├── arabia-before-islam.ts
     ├── hilf-al-fudul.ts
     ├── reconstruction-of-the-kabah.ts
-    └── nabuwah.ts
+    ├── nabuwah.ts
+    └── flood-of-marib.ts
 ```
 
 ## Steps to Add a New Event
@@ -34,6 +34,8 @@ export const firstHijrah: EventData = {
   location: 'Abyssinia (Ethiopia)',
   era: 'Early Prophethood',
   context: 'The first migration of Muslims to escape persecution in Makkah...',
+  summary:
+    'The first migration of Muslims to escape persecution in Makkah and seek refuge under a just king.',
   quotes: [
     {
       subtitle: 'Prophetic Guidance',
@@ -116,40 +118,16 @@ export const EVENTS_DATA: EventData[] = [
 ];
 ```
 
-### 3. Update the Events Cards File
+### 3. Event Cards are Generated Automatically
 
-Add a new event card to the `EVENTS` array in `eventsCards.ts`:
+Event cards are now automatically generated from the event data using the `getEventCards()` function. No separate file is needed!
 
-```typescript
-import { EventCard } from './types';
+### 4. That's It!
 
-export const EVENTS: EventCard[] = [
-  // ... existing events
-  {
-    slug: 'first-hijrah',
-    title: 'First Hijrah to Abyssinia',
-    location: 'Abyssinia (Ethiopia)',
-    era: 'Early Prophethood',
-    summary:
-      'The first migration of Muslims to escape persecution in Makkah and seek refuge under a just king.',
-    href: '/events/first-hijrah',
-    status: 'Live', // or "Soon" if not ready
-  },
-];
-```
+No additional steps needed. The event will automatically be available through:
 
-### 4. Update the Index File (Optional)
-
-If you want to export the individual event for direct access, add it to `index.ts`:
-
-```typescript
-// Export individual events (for direct access if needed)
-export { arabiaBeforeIslam } from './events/arabia-before-islam';
-export { hilfAlFudul } from './events/hilf-al-fudul';
-export { reconstructionOfTheKabah } from './events/reconstruction-of-the-kabah';
-export { nabuwah } from './events/nabuwah';
-export { firstHijrah } from './events/first-hijrah'; // Add this line
-```
+- `getEventBySlug('your-event-slug')` - to get individual event data
+- `getEventCards()` - to get event cards for display
 
 ## Event Data Structure
 
@@ -160,6 +138,7 @@ export { firstHijrah } from './events/first-hijrah'; // Add this line
 - `location`: Where the event took place
 - `era`: Time period classification
 - `context`: Brief description of the event
+- `summary`: Short summary for event cards (used in timeline/listing)
 - `quotes`: Array of quotes (at least one)
 - `deeper`: Array of detailed insights
 - `media`: Array of media items (can be empty)
@@ -231,8 +210,32 @@ When adding a new event, you need to modify these files:
 
 1. ✅ **Create**: `data/events/your-event-slug.ts`
 2. ✅ **Update**: `data/utils.ts` (add import and to EVENTS_DATA array)
-3. ✅ **Update**: `data/eventsCards.ts` (add to EVENTS array)
-4. ⚠️ **Optional**: `data/index.ts` (add export if needed)
+
+**Note**: Event cards are now automatically generated from event data, so no separate cards file is needed!
+
+## Using Event Cards
+
+Event cards are generated dynamically using the `getEventCards()` function:
+
+```typescript
+import { getEventCards } from '@/data';
+
+// Get all event cards
+const allEvents = getEventCards();
+
+// Get limited number of event cards (e.g., show only 3)
+const limitedEvents = getEventCards(3);
+
+// Get all events (same as getEventCards())
+const allEventsAgain = getEventCards(-1);
+```
+
+### Function Parameters
+
+- `limit` (number, optional): Number of events to return
+  - `-1` or no parameter: Return all events
+  - `n` (positive number): Return first n events
+  - `0`: Return empty array
 
 ## Troubleshooting
 

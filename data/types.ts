@@ -11,6 +11,7 @@ export type EventData = {
   location: string;
   era: string;
   context: string;
+  summary: string;
   quotes: {
     subtitle: string;
     text: string;
@@ -21,7 +22,7 @@ export type EventData = {
   media: MediaItem[];
   lessons: string[];
   parallels: string[];
-  followups: {
+  followups?: {
     action: {
       prompt: string;
       type: 'dropdown' | 'mcq';

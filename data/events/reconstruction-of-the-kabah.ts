@@ -7,6 +7,8 @@ export const reconstructionOfTheKabah: EventData = {
   era: 'Pre-Prophethood',
   context:
     'Before revelation, Quraysh rebuilt the Kaʿbah after it was damaged by flood and fire. They limited its size due to lack of pure funds, leaving Hijr Ismāʿīl outside the structure.',
+  summary:
+    'The Kaʿbah was reconstructed by the Prophet Muhammad (ﷺ) after it was destroyed by the Romans.',
   quotes: [
     {
       subtitle: 'Prophetic Ḥadīth',

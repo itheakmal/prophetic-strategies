@@ -8,7 +8,7 @@ export const floodOfMarib: EventData = {
   context:
     'The Maʾrib Dam in Yemen (built by the Sabaʾ kingdom, ~8th century BCE, maintained for centuries) collapsed. Its destruction led to a devastating flood.',
   summary:
-    'The Kaʿbah was reconstructed by the Prophet Muhammad (ﷺ) after it was destroyed by the Romans.',
+    'There was a devastating flood in Yemen that caused migration of major Yemeni tribes to different parts of Arabia.',
   quotes: [
     {
       subtitle: 'Qurʾān',
@@ -18,7 +18,7 @@ export const floodOfMarib: EventData = {
         'The fertile region of Sabaʾ (Yemen) was ruined. Agricultural prosperity collapsed. Major Yemeni tribes migrated northwards into different parts of Arabia. Aws & Khazraj moved to Yathrib (later Madinah). Ghassānids migrated toward Syria.',
     },
     {
-      subtitle: 'Qurʾān 1',
+      subtitle: 'Qurʾān',
       text: 'The people of the pit were destroyed, with fire abounding in fuel, while they sat around it, and were witnessing what they did to the believers.',
       source: 'Surat al-Burūj 85:4–8',
       details:
@@ -33,39 +33,13 @@ export const floodOfMarib: EventData = {
   ],
   media: [],
   lessons: [
-    'Traces of tawḥīd remained in Arabia through individuals like Umayyah ibn Abī al-Ṣalt.',
-    "He was from Ṭāʾif and he preached about Allah's oneness and recited poetry on tawḥīd",
-    'The Prophet ﷺ admired his poetry but wished he had accepted Islam.',
-    'Knowledge without submission led Umayyah to reject prophethood out of jealousy.',
-    'His preaching meant that his people were not strangers to the idea of one God.',
+    'That is the background of overall Arabia before Islam.',
+    "Its a divided society on mulitple levels.",
+    'The Prophet ﷺ started his movement and united the whole of Arabia.',
   ],
   parallels: [
-    'Modern societies also face choices about whether to fund sacred or noble causes with questionable means.',
-    'Leadership requires both integrity and wisdom in resolving disputes.',
-    'Physical structures symbolize deeper moral principles — purity of means affects long-term legacy.',
+    'We have divisions among us, we can serve to unite.',
+    'Christians and Jews gave some kinds of support to the Prophet ﷺ, as they already believed in Prophethood, so the concept was there to some extent.',
+    'We have believing muslims and we just need to unite them.',
   ],
-  // followups: {
-  //   action: {
-  //     prompt:"",
-  //     type: 'dropdown',
-  //     choices: [],
-  //     correctIndex: 0,
-  //     explanation:"",
-
-  //   },
-  //   reaction: {
-  //     prompt:
-  //       'How did the Prophet ﷺ prevent bloodshed during the Black Stone dispute?',
-  //     type: 'mcq',
-  //     choices: [
-  //       'He placed the stone himself without consulting',
-  //       'He appointed one clan leader to do it',
-  //       'He spread his cloak, placed the stone on it, and had each clan lift it together',
-  //       'He delayed the placement until they calmed down',
-  //     ],
-  //     correctIndex: 2,
-  //     explanation:
-  //       'The Prophet ﷺ spread his cloak, placed the Black Stone in it, and let each clan hold a corner. He then set it in place himself, satisfying all parties.',
-  //   },
-  // },
 };

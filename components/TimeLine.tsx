@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { EVENTS } from "@/data/event";
+import { EVENTS } from "@/data";
 
 export default function Timeline() {
 	return (

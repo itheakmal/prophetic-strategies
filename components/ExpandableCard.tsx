@@ -28,6 +28,7 @@ export default function ExpandableCard({
       className={`relative fade-in-up ${staggerClass} group`}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
+      style={{ zIndex: isExpanded ? 50 : 'auto' }}
     >
       {/* Base Card - Always visible */}
       <div className="card p-6 transition-all duration-300 group-hover:shadow-xl">
@@ -52,11 +53,15 @@ export default function ExpandableCard({
       </div>
 
       {/* Expanded Content - Overlay */}
-      <div className={`absolute top-0 left-0 right-0 z-10 card p-6 bg-white shadow-2xl border border-stone-200 transition-all duration-300 ease-in-out ${
+      <div className={`absolute top-0 left-0 right-0 z-50 card p-6 bg-white shadow-2xl border border-stone-200 transition-all duration-300 ease-in-out overflow-visible ${
         isExpanded 
           ? 'opacity-100 translate-y-0 scale-100' 
           : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
-      }`}>
+      }`}
+      style={{
+        minHeight: isExpanded ? 'auto' : '100%',
+        maxHeight: isExpanded ? 'none' : '100%'
+      }}>
         <div className={`w-14 h-14 bg-gradient-to-br ${gradientFrom} ${gradientTo} rounded-2xl flex items-center justify-center mb-4`}>
           {icon}
         </div>

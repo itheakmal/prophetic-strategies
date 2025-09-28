@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Section from "./Section";
-import { getEventBySlug, EVENTS } from "@/data/event";
+import { getEventBySlug, EVENTS } from "@/data";
 import MediaCarousel from "./MediaCarousel";
 import React from "react";
 import SidebarGallery from "./SidebarGallery";
@@ -15,10 +15,31 @@ export default function AppSidebar() {
   
   const event = getEventBySlug(state.currentEventId)
 
-
+console.log(event)
 
 	return (
 		<aside className="card p-6">
+			<div className="mb-6">
+				<div className="flex items-center gap-3 mb-4">
+					<div className="w-1 h-6 bg-gradient-to-b from-amber-400 to-amber-600 rounded-full"></div>
+					<h3 className="text-lg font-serif font-bold text-stone-900">Related</h3>
+				</div>
+				<div className="space-y-3">
+					{event && event.media && event.media.length > 0 && (
+					<SidebarGallery items={event.media as any} currentIndex={state.mediaIndex} onSelect={setMediaIndex} />
+					)}
+					{event && event.deeper.length > 0 && (
+					<>
+					{event.deeper.map((item, index)=>{
+						return (
+							<Details key={index} summary={item.split(':')[0]}>{item.split(':')[1]}</Details>
+						)
+					})}
+						
+					</>
+					)}
+				</div>
+			</div>
 			<div className="mb-6">
 				<div className="flex items-center gap-3 mb-4">
 					<div className="w-1 h-6 bg-gradient-to-b from-amber-400 to-amber-600 rounded-full"></div>
@@ -63,25 +84,7 @@ export default function AppSidebar() {
 	  {/* <Section title="Event Presentation" subtitle="Context, visuals, and a key quote"> */}
         {/* <div className="grid gap-5 md:grid-cols-3"> */}
           
-          <div className="space-y-3">
-            {event && event.media && event.media.length > 0 && (
-              <SidebarGallery items={event.media as any} currentIndex={state.mediaIndex} onSelect={setMediaIndex} />
-            )}
-            {event && event.deeper.length > 0 && (
-              <>
-                <Details summary="Social conditions in Makkah">{event.deeper[0]}</Details>
-                {event.deeper[1] && <Details summary="Tribal dynamics">{event.deeper[1]}</Details>}
-                {event.deeper[2] && (
-                  <Details summary="Think Deeper (scholarly notes)">
-                    <ul className="list-disc pl-5">
-                      <li>{event.deeper[2]}</li>
-                      <li>Insert authenticated hadith/biographical references here with exact wording & citations.</li>
-                    </ul>
-                  </Details>
-                )}
-              </>
-            )}
-          </div>
+          
         {/* </div> */}
       {/* </Section> */}
 		</aside>

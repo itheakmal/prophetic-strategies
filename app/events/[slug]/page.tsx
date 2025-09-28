@@ -9,7 +9,7 @@ import PillButton from '@/components/PillButton'
 import Details from '@/components/Details'
 import MediaCarousel from '@/components/MediaCarousel'
 import SidebarGallery from '@/components/SidebarGallery'
-import { getEventBySlug } from '@/data/event'
+import { getEventBySlug } from '@/data'
 import { useEvents, useEventProgress, useEventActions } from '@/contexts/EventsContext'
 
 interface EventPageProps {
@@ -91,34 +91,33 @@ export default function EventPage({ params }: EventPageProps) {
       )}
 
       {/* 1) Event Presentation */}
-      <Section title="Sacred Quote" subtitle="A timeless message from the Prophet (ﷺ)">
+      <Section title="Sacred Quotes" subtitle={event.quotes[0]?.subtitle}>
         <div className="space-y-6">
           {event.media && event.media.length > 0 && (
             <div className="fade-in-up stagger-1">
               <MediaCarousel items={event.media} index={state.mediaIndex} onChange={setMediaIndex} />
             </div>
           )}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 via-amber-100/50 to-emerald-50 p-8 fade-in-up stagger-2">
-            <div className="relative z-10">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-serif font-bold text-amber-900">Prophetic Wisdom</h3>
+          {event.quotes.map((quote, index) => (
+            <div key={index} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 via-amber-100/50 to-emerald-50 p-8 fade-in-up stagger-2">
+              <div className="relative z-10">
+                <blockquote className="text-lg md:text-xl leading-relaxed text-amber-900 font-medium italic mb-4">
+                  "{quote.text}"
+                </blockquote>
+                <cite className="text-sm text-amber-700 font-medium">
+                  — {quote.source}
+                </cite>
+                {quote.details && (
+                  <p className="mt-4 text-sm text-amber-800 leading-relaxed">
+                    {quote.details}
+                  </p>
+                )}
               </div>
-              <blockquote className="text-lg md:text-xl leading-relaxed text-amber-900 font-medium italic mb-4">
-                "{event.quote.text}"
-              </blockquote>
-              <cite className="text-sm text-amber-700 font-medium">
-                — {event.quote.source}
-              </cite>
+              {/* Decorative elements */}
+              <div className="absolute top-4 right-4 w-16 h-16 bg-amber-200/20 rounded-full"></div>
+              <div className="absolute bottom-4 left-4 w-12 h-12 bg-emerald-200/20 rounded-full"></div>
             </div>
-            {/* Decorative elements */}
-            <div className="absolute top-4 right-4 w-16 h-16 bg-amber-200/20 rounded-full"></div>
-            <div className="absolute bottom-4 left-4 w-12 h-12 bg-emerald-200/20 rounded-full"></div>
-          </div>
+          ))}
         </div>
       </Section>
 

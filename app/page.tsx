@@ -2,6 +2,7 @@
 
 import Timeline from '@/components/TimeLine';
 import Link from 'next/link';
+import { EVENTS } from '@/data';
 
 export default function LandingPage() {
   return (
@@ -46,7 +47,7 @@ export default function LandingPage() {
       {/* Stats Section */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="card p-6 text-center fade-in-up stagger-1">
-          <div className="text-3xl font-bold text-amber-600 mb-2">2</div>
+          <div className="text-3xl font-bold text-amber-600 mb-2">{EVENTS.length}</div>
           <div className="text-stone-700 font-medium">Interactive Events</div>
           <div className="text-sm text-stone-500 mt-1">Live experiences</div>
         </div>
@@ -69,7 +70,7 @@ export default function LandingPage() {
             <h2 className="text-3xl font-serif font-bold text-stone-900 mb-2">Sacred Timeline</h2>
             <p className="text-stone-600 max-w-2xl">
               Journey through pivotal moments in Islamic history. Each event offers deep insights, 
-              interactive media, and reflective questions to enrich your understanding.
+              interactive media, and reflective questions to enrich our understanding.
             </p>
           </div>
         </div>

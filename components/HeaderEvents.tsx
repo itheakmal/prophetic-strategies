@@ -1,6 +1,6 @@
 import React from 'react'
 import ProgressBar from './ProgressBar'
-import { getEventBySlug } from '@/data/event'
+import { getEventBySlug } from '@/data'
 import { useEvents, useEventProgress } from '@/contexts/EventsContext'
 
 export default function HeaderEvents() {

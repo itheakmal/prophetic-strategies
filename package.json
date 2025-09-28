@@ -7,7 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint || echo 'lint skipped'"
+    "lint": "next lint || echo 'lint skipped'",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:staged": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "d3": "^7.9.0",
@@ -23,6 +26,7 @@
     "@types/node": "24.5.2",
     "@types/react": "19.1.13",
     "postcss": "8.5.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "4.1.13",
     "typescript": "5.9.2"
   },

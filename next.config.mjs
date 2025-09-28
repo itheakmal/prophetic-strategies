@@ -5,7 +5,7 @@ const nextConfig = {
   // Optimize for Vercel deployment
   output: 'standalone',
   images: {
-    unoptimized: true // Since you're using static media
-  }
+    unoptimized: true, // Since you're using static media
+  },
 };
 export default nextConfig;

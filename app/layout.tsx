@@ -7,11 +7,15 @@ export const metadata = {
   description: 'Interactive learning UI for the Pact of the Virtuous',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body>
-        <div className="mx-auto max-w-5xl px-4 py-6">
+        <div className='mx-auto max-w-5xl px-4 py-6'>
           <Header />
           {children}
           <Footer />

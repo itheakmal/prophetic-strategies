@@ -1,27 +1,27 @@
-'use client'
+'use client';
 
-import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 // Types
-export type Choice = 'action' | 'reaction' | null
+export type Choice = 'action' | 'reaction' | null;
 
 export interface EventState {
   // Current event state
-  currentEventId: string
-  choice: Choice
-  answerIndex: number | null
-  answerChecked: boolean
-  thinkDeeper: boolean
-  journal: string
-  savedAt: string | null
-  mediaIndex: number
-  
+  currentEventId: string;
+  choice: Choice;
+  answerIndex: number | null;
+  answerChecked: boolean;
+  thinkDeeper: boolean;
+  journal: string;
+  savedAt: string | null;
+  mediaIndex: number;
+
   // Progress tracking
-  progress: number
-  badges: string[]
-  
+  progress: number;
+  badges: string[];
+
   // Navigation
-  availableEvents: string[]
+  availableEvents: string[];
 }
 
 export type EventAction =
@@ -35,7 +35,7 @@ export type EventAction =
   | { type: 'SET_MEDIA_INDEX'; payload: number }
   | { type: 'RESET_EVENT_STATE' }
   | { type: 'LOAD_STATE'; payload: Partial<EventState> }
-  | { type: 'SWITCH_EVENT'; payload: string }
+  | { type: 'SWITCH_EVENT'; payload: string };
 
 // Initial state
 const initialState: EventState = {
@@ -49,18 +49,18 @@ const initialState: EventState = {
   mediaIndex: 0,
   progress: 0,
   badges: [],
-  availableEvents: ['hilf-al-fudul', 'nabuwah']
-}
+  availableEvents: ['hilf-al-fudul', 'nabuwah'],
+};
 
 // Reducer
 function eventsReducer(state: EventState, action: EventAction): EventState {
   switch (action.type) {
     case 'SET_CURRENT_EVENT':
-      return { ...state, currentEventId: action.payload }
-    
+      return { ...state, currentEventId: action.payload };
+
     case 'SWITCH_EVENT':
-      return { 
-        ...state, 
+      return {
+        ...state,
         currentEventId: action.payload,
         choice: null,
         answerIndex: null,
@@ -68,30 +68,30 @@ function eventsReducer(state: EventState, action: EventAction): EventState {
         thinkDeeper: false,
         journal: '',
         savedAt: null,
-        mediaIndex: 0
-      }
-    
+        mediaIndex: 0,
+      };
+
     case 'SET_CHOICE':
-      return { ...state, choice: action.payload }
-    
+      return { ...state, choice: action.payload };
+
     case 'SET_ANSWER_INDEX':
-      return { ...state, answerIndex: action.payload }
-    
+      return { ...state, answerIndex: action.payload };
+
     case 'SET_ANSWER_CHECKED':
-      return { ...state, answerChecked: action.payload }
-    
+      return { ...state, answerChecked: action.payload };
+
     case 'SET_THINK_DEEPER':
-      return { ...state, thinkDeeper: action.payload }
-    
+      return { ...state, thinkDeeper: action.payload };
+
     case 'SET_JOURNAL':
-      return { ...state, journal: action.payload }
-    
+      return { ...state, journal: action.payload };
+
     case 'SET_SAVED_AT':
-      return { ...state, savedAt: action.payload }
-    
+      return { ...state, savedAt: action.payload };
+
     case 'SET_MEDIA_INDEX':
-      return { ...state, mediaIndex: action.payload }
-    
+      return { ...state, mediaIndex: action.payload };
+
     case 'RESET_EVENT_STATE':
       return {
         ...state,
@@ -101,102 +101,110 @@ function eventsReducer(state: EventState, action: EventAction): EventState {
         thinkDeeper: false,
         journal: '',
         savedAt: null,
-        mediaIndex: 0
-      }
-    
+        mediaIndex: 0,
+      };
+
     case 'LOAD_STATE':
-      return { ...state, ...action.payload }
-    
+      return { ...state, ...action.payload };
+
     default:
-      return state
+      return state;
   }
 }
 
 // Context
 const EventsContext = createContext<{
-  state: EventState
-  dispatch: React.Dispatch<EventAction>
-} | null>(null)
+  state: EventState;
+  dispatch: React.Dispatch<EventAction>;
+} | null>(null);
 
 // Provider component
 export function EventsProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(eventsReducer, initialState)
+  const [state, dispatch] = useReducer(eventsReducer, initialState);
 
   // Load state from localStorage on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('haf_state')
+      const saved = localStorage.getItem('haf_state');
       if (saved) {
-        const parsedState = JSON.parse(saved)
-        dispatch({ type: 'LOAD_STATE', payload: parsedState })
+        const parsedState = JSON.parse(saved);
+        dispatch({ type: 'LOAD_STATE', payload: parsedState });
       }
     } catch (error) {
-      console.warn('Failed to load state from localStorage:', error)
+      console.warn('Failed to load state from localStorage:', error);
     }
-  }, [])
+  }, []);
 
   // Save state to localStorage whenever state changes
   useEffect(() => {
     try {
-      localStorage.setItem('haf_state', JSON.stringify(state))
+      localStorage.setItem('haf_state', JSON.stringify(state));
     } catch (error) {
-      console.warn('Failed to save state to localStorage:', error)
+      console.warn('Failed to save state to localStorage:', error);
     }
-  }, [state])
+  }, [state]);
 
   return (
     <EventsContext.Provider value={{ state, dispatch }}>
       {children}
     </EventsContext.Provider>
-  )
+  );
 }
 
 // Hook to use the context
 export function useEvents() {
-  const context = useContext(EventsContext)
+  const context = useContext(EventsContext);
   if (!context) {
-    throw new Error('useEvents must be used within an EventsProvider')
+    throw new Error('useEvents must be used within an EventsProvider');
   }
-  return context
+  return context;
 }
 
 // Custom hooks for specific state slices
 export function useEventProgress() {
-  const { state } = useEvents()
-  
+  const { state } = useEvents();
+
   const progress = React.useMemo(() => {
-    let p = 0
-    if (state.choice) p += 25
-    if (state.answerChecked) p += 35
-    if (state.thinkDeeper) p += 20
-    if (state.journal.trim().length > 0) p += 20
-    return Math.min(100, p)
-  }, [state.choice, state.answerChecked, state.thinkDeeper, state.journal])
+    let p = 0;
+    if (state.choice) p += 25;
+    if (state.answerChecked) p += 35;
+    if (state.thinkDeeper) p += 20;
+    if (state.journal.trim().length > 0) p += 20;
+    return Math.min(100, p);
+  }, [state.choice, state.answerChecked, state.thinkDeeper, state.journal]);
 
   const badges = React.useMemo(() => {
-    const b: string[] = []
-    if (state.choice) b.push('Justice Seeker')
-    if (state.answerChecked) b.push('Insightful Reader') // We'll need to add correct answer logic
-    if (state.journal.trim().length >= 80) b.push('Reflective Heart')
-    if (state.thinkDeeper) b.push('Student of Knowledge')
-    return b
-  }, [state.choice, state.answerChecked, state.journal, state.thinkDeeper])
+    const b: string[] = [];
+    if (state.choice) b.push('Justice Seeker');
+    if (state.answerChecked) b.push('Insightful Reader'); // We'll need to add correct answer logic
+    if (state.journal.trim().length >= 80) b.push('Reflective Heart');
+    if (state.thinkDeeper) b.push('Student of Knowledge');
+    return b;
+  }, [state.choice, state.answerChecked, state.journal, state.thinkDeeper]);
 
-  return { progress, badges }
+  return { progress, badges };
 }
 
 export function useEventActions() {
-  const { dispatch } = useEvents()
+  const { dispatch } = useEvents();
 
   return {
-    setChoice: (choice: Choice) => dispatch({ type: 'SET_CHOICE', payload: choice }),
-    setAnswerIndex: (index: number | null) => dispatch({ type: 'SET_ANSWER_INDEX', payload: index }),
-    setAnswerChecked: (checked: boolean) => dispatch({ type: 'SET_ANSWER_CHECKED', payload: checked }),
-    setThinkDeeper: (deeper: boolean) => dispatch({ type: 'SET_THINK_DEEPER', payload: deeper }),
-    setJournal: (journal: string) => dispatch({ type: 'SET_JOURNAL', payload: journal }),
-    setSavedAt: (savedAt: string | null) => dispatch({ type: 'SET_SAVED_AT', payload: savedAt }),
-    setMediaIndex: (index: number) => dispatch({ type: 'SET_MEDIA_INDEX', payload: index }),
+    setChoice: (choice: Choice) =>
+      dispatch({ type: 'SET_CHOICE', payload: choice }),
+    setAnswerIndex: (index: number | null) =>
+      dispatch({ type: 'SET_ANSWER_INDEX', payload: index }),
+    setAnswerChecked: (checked: boolean) =>
+      dispatch({ type: 'SET_ANSWER_CHECKED', payload: checked }),
+    setThinkDeeper: (deeper: boolean) =>
+      dispatch({ type: 'SET_THINK_DEEPER', payload: deeper }),
+    setJournal: (journal: string) =>
+      dispatch({ type: 'SET_JOURNAL', payload: journal }),
+    setSavedAt: (savedAt: string | null) =>
+      dispatch({ type: 'SET_SAVED_AT', payload: savedAt }),
+    setMediaIndex: (index: number) =>
+      dispatch({ type: 'SET_MEDIA_INDEX', payload: index }),
     resetEventState: () => dispatch({ type: 'RESET_EVENT_STATE' }),
-    switchEvent: (eventId: string) => dispatch({ type: 'SWITCH_EVENT', payload: eventId })
-  }
+    switchEvent: (eventId: string) =>
+      dispatch({ type: 'SWITCH_EVENT', payload: eventId }),
+  };
 }

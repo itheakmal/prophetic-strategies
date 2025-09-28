@@ -16,7 +16,10 @@ const STYLE = 'https://demotiles.maplibre.org/style.json'; // dev tiles; swap fo
 type BBox = [[number, number], [number, number]]; // [[minLon,minLat],[maxLon,maxLat]]
 
 function polygonBounds(coords: number[][][]): BBox {
-  let minLon = +Infinity, minLat = +Infinity, maxLon = -Infinity, maxLat = -Infinity;
+  let minLon = +Infinity,
+    minLat = +Infinity,
+    maxLon = -Infinity,
+    maxLat = -Infinity;
   for (const ring of coords) {
     for (const [lon, lat] of ring) {
       if (lon < minLon) minLon = lon;
@@ -25,7 +28,10 @@ function polygonBounds(coords: number[][][]): BBox {
       if (lat > maxLat) maxLat = lat;
     }
   }
-  return [[minLon, minLat], [maxLon, maxLat]];
+  return [
+    [minLon, minLat],
+    [maxLon, maxLat],
+  ];
 }
 
 export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
@@ -40,45 +46,74 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
   const focusedSet = new Set(focusedRegion?.members ?? []);
 
   // ---- GeoJSON sources
-  const points = useMemo(() => ({
-    type: 'FeatureCollection',
-    features: nodes.map(n => ({
-      type: 'Feature',
-      geometry: { type: 'Point', coordinates: [n.lon, n.lat] },
-      properties: {
-        id: n.id, name: n.name, group: n.group,
-        chiefs: (n.chiefs || []).join(' • '),
-        elders: (n.elders || []).join(' • '),
-        refs: JSON.stringify(n.refs || [])
-      }
-    }))
-  }) as geojson.FeatureCollection, [nodes]);
+  const points = useMemo(
+    () =>
+      ({
+        type: 'FeatureCollection',
+        features: nodes.map(n => ({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [n.lon, n.lat] },
+          properties: {
+            id: n.id,
+            name: n.name,
+            group: n.group,
+            chiefs: (n.chiefs || []).join(' • '),
+            elders: (n.elders || []).join(' • '),
+            refs: JSON.stringify(n.refs || []),
+          },
+        })),
+      }) as geojson.FeatureCollection,
+    [nodes]
+  );
 
-  const lines = useMemo(() => ({
-    type: 'FeatureCollection',
-    features: links.map(l => {
-      const a = nodes.find(n => n.id === l.source);
-      const b = nodes.find(n => n.id === l.target);
-      if (!a || !b) return null;
-      return {
-        type: 'Feature',
-        geometry: { type: 'LineString', coordinates: [[a.lon, a.lat], [b.lon, b.lat]] },
-        properties: { kind: l.kind, note: l.note || '', sourceId: a.id, targetId: b.id }
-      };
-    }).filter(Boolean)
-  }) as geojson.FeatureCollection, [links, nodes]);
+  const lines = useMemo(
+    () =>
+      ({
+        type: 'FeatureCollection',
+        features: links
+          .map(l => {
+            const a = nodes.find(n => n.id === l.source);
+            const b = nodes.find(n => n.id === l.target);
+            if (!a || !b) return null;
+            return {
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: [
+                  [a.lon, a.lat],
+                  [b.lon, b.lat],
+                ],
+              },
+              properties: {
+                kind: l.kind,
+                note: l.note || '',
+                sourceId: a.id,
+                targetId: b.id,
+              },
+            };
+          })
+          .filter(Boolean),
+      }) as geojson.FeatureCollection,
+    [links, nodes]
+  );
 
-  const regions = useMemo(() => ({
-    type: 'FeatureCollection',
-    features: REGIONS.map(r => ({
-      type: 'Feature',
-      geometry: r.geometry,
-      properties: {
-        id: r.id, name: r.name, color: r.color || '#fde68a',
-        members: JSON.stringify(r.members)
-      }
-    }))
-  }) as geojson.FeatureCollection, []);
+  const regions = useMemo(
+    () =>
+      ({
+        type: 'FeatureCollection',
+        features: REGIONS.map(r => ({
+          type: 'Feature',
+          geometry: r.geometry,
+          properties: {
+            id: r.id,
+            name: r.name,
+            color: r.color || '#fde68a',
+            members: JSON.stringify(r.members),
+          },
+        })),
+      }) as geojson.FeatureCollection,
+    []
+  );
 
   // ---- Init map
   useEffect(() => {
@@ -90,7 +125,10 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
       zoom: 5.1,
       attributionControl: true,
     });
-    map.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'top-right');
+    map.addControl(
+      new maplibregl.NavigationControl({ showCompass: true }),
+      'top-right'
+    );
     mapRef.current = map;
 
     map.on('load', () => {
@@ -105,14 +143,14 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
         source: 'tribe-regions',
         paint: {
           'fill-color': ['coalesce', ['get', 'color'], '#fde68a'],
-          'fill-opacity': 0.25
-        }
+          'fill-opacity': 0.25,
+        },
       });
       map.addLayer({
         id: 'regions-outline',
         type: 'line',
         source: 'tribe-regions',
-        paint: { 'line-color': '#f59e0b', 'line-width': 2 }
+        paint: { 'line-color': '#f59e0b', 'line-width': 2 },
       });
       map.addLayer({
         id: 'regions-label',
@@ -122,7 +160,7 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
           'text-field': ['get', 'name'],
           'text-size': 12,
         },
-        paint: { 'text-color': '#92400e' }
+        paint: { 'text-color': '#92400e' },
       });
 
       // --- Global links
@@ -131,14 +169,18 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
         type: 'line',
         source: 'tribe-lines',
         filter: ['==', ['get', 'kind'], 'alliance'],
-        paint: { 'line-color': '#10b981', 'line-width': 2 }
+        paint: { 'line-color': '#10b981', 'line-width': 2 },
       });
       map.addLayer({
         id: 'links-war',
         type: 'line',
         source: 'tribe-lines',
         filter: ['==', ['get', 'kind'], 'war'],
-        paint: { 'line-color': '#ef4444', 'line-width': 3, 'line-dasharray': [2, 2] }
+        paint: {
+          'line-color': '#ef4444',
+          'line-width': 3,
+          'line-dasharray': [2, 2],
+        },
       });
 
       // --- Global points + labels
@@ -151,16 +193,20 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
           'circle-color': [
             'match',
             ['get', 'group'],
-            'Quraysh', '#0ea5e9',
-            'Taif',    '#f59e0b',
-            'Yathrib', '#22c55e',
-            'Najd',    '#6366f1',
-            '#64748b'
+            'Quraysh',
+            '#0ea5e9',
+            'Taif',
+            '#f59e0b',
+            'Yathrib',
+            '#22c55e',
+            'Najd',
+            '#6366f1',
+            '#64748b',
           ],
           'circle-stroke-color': '#111',
           'circle-stroke-width': 0.5,
-          'circle-opacity': 0.95
-        }
+          'circle-opacity': 0.95,
+        },
       });
       map.addLayer({
         id: 'tribe-labels',
@@ -172,7 +218,7 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
           'text-offset': [0, 1.2],
           'text-anchor': 'top',
         },
-        paint: { 'text-color': '#334155' }
+        paint: { 'text-color': '#334155' },
       });
 
       // --- Focused region overlays (inner graph)
@@ -181,12 +227,13 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
         id: 'links-inner',
         type: 'line',
         source: 'tribe-lines',
-        filter: ['all',
+        filter: [
+          'all',
           ['==', ['get', 'kind'], 'alliance'],
           ['in', ['get', 'sourceId'], ['literal', []]],
           ['in', ['get', 'targetId'], ['literal', []]],
         ],
-        paint: { 'line-color': '#065f46', 'line-width': 3 }
+        paint: { 'line-color': '#065f46', 'line-width': 3 },
       });
 
       // Focused nodes: members only (bigger)
@@ -199,15 +246,19 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
           'circle-radius': 7.5,
           'circle-color': '#f59e0b',
           'circle-stroke-color': '#111',
-          'circle-stroke-width': 0.8
-        }
+          'circle-stroke-width': 0.8,
+        },
       });
 
       // Interactions
-      map.on('mouseenter', 'regions-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
-      map.on('mouseleave', 'regions-fill', () => { map.getCanvas().style.cursor = ''; });
+      map.on('mouseenter', 'regions-fill', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'regions-fill', () => {
+        map.getCanvas().style.cursor = '';
+      });
 
-      map.on('click', 'regions-fill', (e) => {
+      map.on('click', 'regions-fill', e => {
         const f = e.features?.[0];
         if (!f) return;
         const pid = f.properties?.id as string;
@@ -221,32 +272,58 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
       });
 
       // Point click -> popup
-      map.on('mouseenter', 'tribe-circles', () => { map.getCanvas().style.cursor = 'pointer'; });
-      map.on('mouseleave', 'tribe-circles', () => { map.getCanvas().style.cursor = ''; });
+      map.on('mouseenter', 'tribe-circles', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'tribe-circles', () => {
+        map.getCanvas().style.cursor = '';
+      });
 
-      map.on('click', 'tribe-circles', (e) => {
+      map.on('click', 'tribe-circles', e => {
         const f = e.features?.[0];
         if (!f) return;
         const p = f.properties as any;
-        const refs = JSON.parse(p.refs || '[]') as {label:string;url:string}[];
+        const refs = JSON.parse(p.refs || '[]') as {
+          label: string;
+          url: string;
+        }[];
         const html = `
           <div style="max-width:280px">
             <div style="font-weight:600;color:#111827">${p.name}</div>
             ${p.chiefs ? `<div><b>Chiefs:</b> ${p.chiefs}</div>` : ''}
             ${p.elders ? `<div><b>Elders:</b> ${p.elders}</div>` : ''}
-            ${refs.length ? `<div style="margin-top:6px;font-size:12px;color:#334155"><b>Citations</b><ul>${
-              refs.map(r => `<li><a href="${r.url}" target="_blank" rel="noreferrer" style="color:#1d4ed8">${r.label}</a></li>`).join('')
-            }</ul></div>` : ''}
+            ${
+              refs.length
+                ? `<div style="margin-top:6px;font-size:12px;color:#334155"><b>Citations</b><ul>${refs
+                    .map(
+                      r =>
+                        `<li><a href="${r.url}" target="_blank" rel="noreferrer" style="color:#1d4ed8">${r.label}</a></li>`
+                    )
+                    .join('')}</ul></div>`
+                : ''
+            }
           </div>
         `;
-        new maplibregl.Popup({ closeOnClick: true }).setLngLat((e as any).lngLat).setHTML(html).addTo(map);
+        new maplibregl.Popup({ closeOnClick: true })
+          .setLngLat((e as any).lngLat)
+          .setHTML(html)
+          .addTo(map);
       });
 
       // Fit initial extent to all nodes
-      const lons = nodes.map(n => n.lon), lats = nodes.map(n => n.lat);
-      const minLon = Math.min(...lons), maxLon = Math.max(...lons);
-      const minLat = Math.min(...lats), maxLat = Math.max(...lats);
-      map.fitBounds([[minLon, minLat], [maxLon, maxLat]], { padding: 50, animate: false });
+      const lons = nodes.map(n => n.lon),
+        lats = nodes.map(n => n.lat);
+      const minLon = Math.min(...lons),
+        maxLon = Math.max(...lons);
+      const minLat = Math.min(...lats),
+        maxLat = Math.max(...lats);
+      map.fitBounds(
+        [
+          [minLon, minLat],
+          [maxLon, maxLat],
+        ],
+        { padding: 50, animate: false }
+      );
     });
 
     const onResize = () => map.resize();
@@ -266,21 +343,42 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
     (map.getSource('tribe-points') as any)?.setData(points);
     (map.getSource('tribe-lines') as any)?.setData(lines);
 
-    map.setLayoutProperty('links-alliance', 'visibility', showAlliance ? 'visible' : 'none');
-    map.setLayoutProperty('links-war', 'visibility', showWar ? 'visible' : 'none');
+    map.setLayoutProperty(
+      'links-alliance',
+      'visibility',
+      showAlliance ? 'visible' : 'none'
+    );
+    map.setLayoutProperty(
+      'links-war',
+      'visibility',
+      showWar ? 'visible' : 'none'
+    );
 
     // Focus filters for inner graph
     const members = focusedRegion?.members ?? [];
-    map.setFilter('tribe-circles-focus', ['in', ['get', 'id'], ['literal', members]]);
-    map.setFilter('links-inner', ['all',
+    map.setFilter('tribe-circles-focus', [
+      'in',
+      ['get', 'id'],
+      ['literal', members],
+    ]);
+    map.setFilter('links-inner', [
+      'all',
       ['==', ['get', 'kind'], 'alliance'],
       ['in', ['get', 'sourceId'], ['literal', members]],
       ['in', ['get', 'targetId'], ['literal', members]],
     ]);
 
     // Dim global circles when focused
-    map.setPaintProperty('tribe-circles', 'circle-opacity', focusedRegion ? 0.25 : 0.95);
-    map.setLayoutProperty('regions-label', 'visibility', focusedRegion ? 'none' : 'visible');
+    map.setPaintProperty(
+      'tribe-circles',
+      'circle-opacity',
+      focusedRegion ? 0.25 : 0.95
+    );
+    map.setLayoutProperty(
+      'regions-label',
+      'visibility',
+      focusedRegion ? 'none' : 'visible'
+    );
   }, [points, lines, showAlliance, showWar, focusedRegion]);
 
   // ---- Reset button
@@ -288,43 +386,64 @@ export default function ArabiaMap({ nodes, links, height = 560 }: Props) {
     const map = mapRef.current;
     setFocusedRegionId(null);
     if (!map) return;
-    const lons = nodes.map(n => n.lon), lats = nodes.map(n => n.lat);
-    const minLon = Math.min(...lons), maxLon = Math.max(...lons);
-    const minLat = Math.min(...lats), maxLat = Math.max(...lats);
-    map.fitBounds([[minLon, minLat], [maxLon, maxLat]], { padding: 50 });
+    const lons = nodes.map(n => n.lon),
+      lats = nodes.map(n => n.lat);
+    const minLon = Math.min(...lons),
+      maxLon = Math.max(...lons);
+    const minLat = Math.min(...lats),
+      maxLat = Math.max(...lats);
+    map.fitBounds(
+      [
+        [minLon, minLat],
+        [maxLon, maxLat],
+      ],
+      { padding: 50 }
+    );
   }
 
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3 p-3 text-sm">
-        <div className="font-semibold text-stone-800">
+    <div className='rounded-2xl border border-stone-200 bg-white shadow-sm'>
+      <div className='flex flex-wrap items-center justify-between gap-3 p-3 text-sm'>
+        <div className='font-semibold text-stone-800'>
           Interactive Map — Arabia (Meccan phase)
           {focusedRegion && (
-            <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-amber-800">
+            <span className='ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-amber-800'>
               Focus: {focusedRegion.name}
             </span>
           )}
         </div>
-        <div className="flex items-center gap-3">
-          <label className="flex items-center gap-1">
-            <input type="checkbox" checked={showAlliance} onChange={e => setShowAlliance(e.target.checked)} />
+        <div className='flex items-center gap-3'>
+          <label className='flex items-center gap-1'>
+            <input
+              type='checkbox'
+              checked={showAlliance}
+              onChange={e => setShowAlliance(e.target.checked)}
+            />
             <span>Alliances</span>
           </label>
-          <label className="flex items-center gap-1">
-            <input type="checkbox" checked={showWar} onChange={e => setShowWar(e.target.checked)} />
+          <label className='flex items-center gap-1'>
+            <input
+              type='checkbox'
+              checked={showWar}
+              onChange={e => setShowWar(e.target.checked)}
+            />
             <span>Wars</span>
           </label>
           {focusedRegion && (
             <button
               onClick={resetFocus}
-              className="rounded-md border border-stone-300 px-2 py-1 hover:bg-stone-100"
+              className='rounded-md border border-stone-300 px-2 py-1 hover:bg-stone-100'
             >
               Reset View
             </button>
           )}
         </div>
       </div>
-      <div ref={ref} style={{ height }} className="w-full overflow-hidden rounded-b-2xl" />
+      <div
+        ref={ref}
+        style={{ height }}
+        className='w-full overflow-hidden rounded-b-2xl'
+      />
     </div>
   );
 }

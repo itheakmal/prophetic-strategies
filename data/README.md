@@ -29,65 +29,68 @@ Create a new file in the `events/` folder following the naming convention: `keba
 import { EventData } from '../types';
 
 export const firstHijrah: EventData = {
-  slug: "first-hijrah",
-  title: "First Hijrah to Abyssinia",
-  location: "Abyssinia (Ethiopia)",
-  era: "Early Prophethood",
-  context: "The first migration of Muslims to escape persecution in Makkah...",
+  slug: 'first-hijrah',
+  title: 'First Hijrah to Abyssinia',
+  location: 'Abyssinia (Ethiopia)',
+  era: 'Early Prophethood',
+  context: 'The first migration of Muslims to escape persecution in Makkah...',
   quotes: [
     {
-      subtitle: "Prophetic Guidance",
-      text: "Go to Abyssinia, for there is a king there who does not wrong anyone...",
-      source: "Sahih Bukhari",
-      details: "The Prophet (ﷺ) advised the early Muslims to migrate to Abyssinia..."
-    }
+      subtitle: 'Prophetic Guidance',
+      text: 'Go to Abyssinia, for there is a king there who does not wrong anyone...',
+      source: 'Sahih Bukhari',
+      details:
+        'The Prophet (ﷺ) advised the early Muslims to migrate to Abyssinia...',
+    },
   ],
   deeper: [
-    "Historical context about the persecution of early Muslims",
-    "Details about the King of Abyssinia and his just rule",
-    "The significance of this migration in Islamic history"
+    'Historical context about the persecution of early Muslims',
+    'Details about the King of Abyssinia and his just rule',
+    'The significance of this migration in Islamic history',
   ],
   media: [
     {
-      type: "image",
-      src: "https://example.com/hijrah-image.jpg",
-      alt: "Illustration of the Hijrah to Abyssinia"
-    }
+      type: 'image',
+      src: 'https://example.com/hijrah-image.jpg',
+      alt: 'Illustration of the Hijrah to Abyssinia',
+    },
   ],
   lessons: [
-    "The importance of seeking refuge from persecution",
+    'The importance of seeking refuge from persecution',
     "Trust in Allah's plan during difficult times",
-    "The value of just leadership and governance"
+    'The value of just leadership and governance',
   ],
   parallels: [
-    "Modern refugee situations and asylum seeking",
-    "The importance of religious freedom",
-    "Leadership qualities that protect the vulnerable"
+    'Modern refugee situations and asylum seeking',
+    'The importance of religious freedom',
+    'Leadership qualities that protect the vulnerable',
   ],
   followups: {
     action: {
-      prompt: "Why did the Prophet ﷺ advise this migration?",
-      type: "dropdown",
+      prompt: 'Why did the Prophet ﷺ advise this migration?',
+      type: 'dropdown',
       choices: [
-        "To escape persecution and preserve the faith",
-        "To establish trade relations",
-        "To avoid conflict with Quraysh"
+        'To escape persecution and preserve the faith',
+        'To establish trade relations',
+        'To avoid conflict with Quraysh',
       ],
       correctIndex: 0,
-      explanation: "The migration was primarily to escape persecution and preserve the Muslim community."
+      explanation:
+        'The migration was primarily to escape persecution and preserve the Muslim community.',
     },
     reaction: {
-      prompt: "How did the Muslims respond to this advice?",
-      type: "mcq",
+      prompt: 'How did the Muslims respond to this advice?',
+      type: 'mcq',
       choices: [
         "They immediately followed the Prophet's guidance",
-        "They hesitated and stayed in Makkah",
-        "They went to different locations"
+        'They hesitated and stayed in Makkah',
+        'They went to different locations',
       ],
       correctIndex: 0,
-      explanation: "The early Muslims trusted the Prophet's guidance and migrated to Abyssinia."
-    }
-  }
+      explanation:
+        "The early Muslims trusted the Prophet's guidance and migrated to Abyssinia.",
+    },
+  },
 };
 ```
 
@@ -123,13 +126,14 @@ import { EventCard } from './types';
 export const EVENTS: EventCard[] = [
   // ... existing events
   {
-    slug: "first-hijrah",
-    title: "First Hijrah to Abyssinia",
-    location: "Abyssinia (Ethiopia)",
-    era: "Early Prophethood",
-    summary: "The first migration of Muslims to escape persecution in Makkah and seek refuge under a just king.",
-    href: "/events/first-hijrah",
-    status: "Live", // or "Soon" if not ready
+    slug: 'first-hijrah',
+    title: 'First Hijrah to Abyssinia',
+    location: 'Abyssinia (Ethiopia)',
+    era: 'Early Prophethood',
+    summary:
+      'The first migration of Muslims to escape persecution in Makkah and seek refuge under a just king.',
+    href: '/events/first-hijrah',
+    status: 'Live', // or "Soon" if not ready
   },
 ];
 ```
@@ -172,6 +176,7 @@ export { firstHijrah } from './events/first-hijrah'; // Add this line
 ## Media Types
 
 ### Images
+
 ```typescript
 {
   type: "image",
@@ -181,6 +186,7 @@ export { firstHijrah } from './events/first-hijrah'; // Add this line
 ```
 
 ### Videos
+
 ```typescript
 {
   type: "video",
@@ -193,12 +199,14 @@ export { firstHijrah } from './events/first-hijrah'; // Add this line
 ## Followup Questions
 
 ### Action Questions
+
 - `type`: "dropdown" or "mcq"
 - `choices`: Array of answer options
 - `correctIndex`: Index of the correct answer (0-based)
 - `explanation`: Why this answer is correct
 
 ### Reaction Questions
+
 - Same structure as action questions
 - Focus on how the Prophet (ﷺ) or Muslims responded
 
@@ -238,6 +246,7 @@ When adding a new event, you need to modify these files:
 ### Validation
 
 After adding an event, check:
+
 - [ ] Event appears in the timeline
 - [ ] Event page loads correctly
 - [ ] All quotes display properly
@@ -248,6 +257,7 @@ After adding an event, check:
 ## Example: Complete New Event
 
 See the existing event files for complete examples:
+
 - `events/arabia-before-islam.ts`
 - `events/hilf-al-fudul.ts`
 - `events/reconstruction-of-the-kabah.ts`

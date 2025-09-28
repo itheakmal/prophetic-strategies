@@ -6,13 +6,13 @@ import { nabuwah } from './events/nabuwah';
 
 // Array of all event data
 export const EVENTS_DATA: EventData[] = [
-	arabiaBeforeIslam,
-	hilfAlFudul,
-	reconstructionOfTheKabah,
-	nabuwah,
+  arabiaBeforeIslam,
+  hilfAlFudul,
+  reconstructionOfTheKabah,
+  nabuwah,
 ];
 
 // Helper function to get event data by slug
 export function getEventBySlug(slug: string): EventData | undefined {
-	return EVENTS_DATA.find(event => event.slug === slug);
+  return EVENTS_DATA.find(event => event.slug === slug);
 }

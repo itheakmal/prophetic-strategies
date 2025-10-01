@@ -38,6 +38,7 @@ export const arabiaBeforeIslam: EventData = {
     'Overton Window (modern political science concept): It describes the range of ideas a society sees as acceptable or mainstream.',
     'Politicians (or leaders) operate within this window to gain support.',
     'Ideas outside the window are dismissed as strange, unacceptable, or too radical.',
+    'The Prophet ﷺ was sent into a broken, chaotic, immoral society with no state, no unity, and no moral compass—and transformed it within 23 years. To replicate this transformation, one must study the environment, the strategy, and the tools used in real context.'
   ],
   followups: {
     action: {

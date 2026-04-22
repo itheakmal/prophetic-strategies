@@ -7,6 +7,7 @@ interface FormData {
   email: string;
   subject: string;
   message: string;
+  website: string;
 }
 
 export default function ContactForm() {
@@ -15,6 +16,7 @@ export default function ContactForm() {
     email: '',
     subject: '',
     message: '',
+    website: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -43,7 +45,7 @@ export default function ContactForm() {
 
       if (response.ok) {
         setSubmitStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', email: '', subject: '', message: '', website: '' });
       } else {
         setSubmitStatus('error');
       }
@@ -106,6 +108,19 @@ export default function ContactForm() {
         />
       </div>
       
+      <div>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          value={formData.website}
+          onChange={handleChange}
+          className="hidden"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-stone-700 mb-2">
           Message *

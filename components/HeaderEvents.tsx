@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProgressBar from './ProgressBar';
-import { getEventBySlug } from '@/data';
 import { useEvents, useEventProgress } from '@/contexts/EventsContext';
+import { EventDetail, fetchEventDetail } from '@/lib/api/public';
 
 export default function HeaderEvents() {
   const { state } = useEvents();
   const { progress } = useEventProgress();
+  const [event, setEvent] = useState<EventDetail | null>(null);
 
-  const event = getEventBySlug(state.currentEventId);
+  useEffect(() => {
+    fetchEventDetail(state.currentEventId).then(setEvent).catch(() => setEvent(null));
+  }, [state.currentEventId]);
 
   if (!event) {
     return null;
@@ -24,16 +27,12 @@ export default function HeaderEvents() {
                   {event.era}
                 </span>
                 <span className='text-stone-400'>•</span>
-                <span className='text-sm text-stone-600 font-medium'>
-                  {event.location}
-                </span>
+                <span className='text-sm text-stone-600 font-medium'>{event.location}</span>
               </div>
               <h1 className='text-3xl md:text-5xl font-serif font-bold text-stone-900 mb-4 leading-tight'>
                 {event.title}
               </h1>
-              <p className='text-lg text-stone-700 leading-relaxed max-w-3xl'>
-                {event.context}
-              </p>
+              <p className='text-lg text-stone-700 leading-relaxed max-w-3xl'>{event.context}</p>
             </div>
           </div>
 
@@ -41,29 +40,16 @@ export default function HeaderEvents() {
             <div className='card p-6 fade-in-up stagger-1'>
               <div className='text-center'>
                 <div className='mb-4'>
-                  <div className='text-3xl font-bold text-amber-600 mb-1'>
-                    {progress}%
-                  </div>
-                  <div className='text-sm text-stone-600 font-medium'>
-                    Complete
-                  </div>
+                  <div className='text-3xl font-bold text-amber-600 mb-1'>{progress}%</div>
+                  <div className='text-sm text-stone-600 font-medium'>Complete</div>
                 </div>
                 <ProgressBar value={progress} />
-                <p className='mt-3 text-xs text-stone-500'>
-                  Keep exploring to unlock more insights
-                </p>
+                <p className='mt-3 text-xs text-stone-500'>Keep exploring to unlock more insights</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Floating decorative elements */}
-      <div className='absolute top-8 right-8 w-16 h-16 bg-amber-200/30 rounded-full floating-animation'></div>
-      <div
-        className='absolute bottom-8 left-8 w-12 h-12 bg-emerald-200/30 rounded-full floating-animation'
-        style={{ animationDelay: '2s' }}
-      ></div>
     </header>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { notFound } from 'next/navigation';
 import Section from '@/components/Section';
 import ProgressBar from '@/components/ProgressBar';
 import Badge from '@/components/Badge';
@@ -9,7 +8,7 @@ import PillButton from '@/components/PillButton';
 import Details from '@/components/Details';
 import MediaCarousel from '@/components/MediaCarousel';
 import SidebarGallery from '@/components/SidebarGallery';
-import { getEventBySlug } from '@/data';
+import { EventDetail, fetchEventDetail } from '@/lib/api/public';
 import {
   useEvents,
   useEventProgress,
@@ -24,11 +23,7 @@ interface EventPageProps {
 
 export default function EventPage({ params }: EventPageProps) {
   const { slug } = React.use(params);
-  const event = getEventBySlug(slug);
-
-  if (!event) {
-    notFound();
-  }
+  const [event, setEvent] = React.useState<EventDetail | null>(null);
 
   const { state } = useEvents();
   const { progress, badges } = useEventProgress();
@@ -50,6 +45,26 @@ export default function EventPage({ params }: EventPageProps) {
       switchEvent(slug);
     }
   }, [slug, state.currentEventId, switchEvent]);
+
+  React.useEffect(() => {
+    let mounted = true;
+
+    fetchEventDetail(slug)
+      .then(data => {
+        if (mounted) setEvent(data);
+      })
+      .catch(() => {
+        if (mounted) setEvent(null);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [slug]);
+
+  if (!event) {
+    return null;
+  }
 
   function currentFollowup() {
     if (!state.choice) return null;

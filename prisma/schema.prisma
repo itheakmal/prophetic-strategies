@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+enum LinkKind {
+  alliance
+  war
+}
+
+enum ContactStatus {
+  NEW
+  IN_REVIEW
+  RESOLVED
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  passwordHash String?
+  role         UserRole  @default(EDITOR)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  auditLogs    AuditLog[]
+  resetTokens  PasswordResetToken[]
+}
+
+model Event {
+  id                String             @id @default(cuid())
+  slug              String             @unique
+  title             String
+  location          String
+  era               String
+  chronologyOrder   Int                @default(0)
+  context           String             @db.Text
+  summary           String             @db.Text
+  deeperPoints      Json
+  lessons           Json
+  parallels         Json
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  deletedAt         DateTime?
+  quotes            EventQuote[]
+  mediaItems        EventMedia[]
+  followupQuestions EventFollowupQuestion[]
+}
+
+model EventQuote {
+  id        String   @id @default(cuid())
+  eventId   String
+  subtitle  String
+  text      String   @db.Text
+  source    String
+  details   String?  @db.Text
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, sortOrder])
+}
+
+model EventMedia {
+  id        String   @id @default(cuid())
+  eventId   String
+  type      String
+  src       String
+  alt       String?
+  poster    String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, sortOrder])
+}
+
+model EventFollowupQuestion {
+  id           String   @id @default(cuid())
+  eventId      String
+  questionType String
+  prompt       String   @db.Text
+  inputType    String
+  choices      Json
+  correctIndex Int
+  explanation  String   @db.Text
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, sortOrder])
+  @@unique([eventId, questionType])
+}
+
+model Tribe {
+  id         String      @id @default(cuid())
+  externalId String      @unique
+  name       String
+  group      String
+  phase      String      @default("meccan")
+  x          Float
+  y          Float
+  lat        Float
+  lon        Float
+  elders     Json?
+  chiefs     Json?
+  refs       Json?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  deletedAt  DateTime?
+  sourceLinks TribeLink[] @relation("sourceTribe")
+  targetLinks TribeLink[] @relation("targetTribe")
+
+  @@index([phase, group])
+}
+
+model TribeLink {
+  id            String   @id @default(cuid())
+  sourceTribeId String
+  targetTribeId String
+  kind          LinkKind
+  note          String?
+  phase         String   @default("meccan")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  sourceTribe   Tribe    @relation("sourceTribe", fields: [sourceTribeId], references: [id], onDelete: Cascade)
+  targetTribe   Tribe    @relation("targetTribe", fields: [targetTribeId], references: [id], onDelete: Cascade)
+
+  @@index([phase])
+  @@index([sourceTribeId])
+  @@index([targetTribeId])
+  @@unique([sourceTribeId, targetTribeId, kind])
+}
+
+model ContactSubmission {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  subject     String
+  message     String        @db.Text
+  sourceIp    String?
+  userAgent   String?       @db.Text
+  status      ContactStatus @default(NEW)
+  emailSentAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  resource   String
+  resourceId String?
+  payload    Json?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([resource, createdAt])
+  @@index([actorId, createdAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+}

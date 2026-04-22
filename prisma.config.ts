@@ -9,6 +9,6 @@ export default defineConfig({
   datasource: {
     url:
       process.env.DATABASE_URL ??
-      'mysql://root:root@localhost:3306/prophetic_strategies',
+      'mysql://u705371345_prophetic_stra:Khan_2468@localhost:3306/u705371345_prophetic_stra',
   },
 });

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:stable": "WATCHPACK_POLLING=true next dev --hostname 127.0.0.1 --port 3000",
-    "build": "prisma migrate deploy && prisma seed && next build",
+    "build": "prisma migrate deploy && tsx prisma/seed.ts && next build",
     "start": "next start",
     "lint": "next lint || echo 'lint skipped'",
     "test": "tsx --test tests/**/*.test.ts",

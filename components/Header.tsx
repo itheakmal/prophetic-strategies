@@ -20,7 +20,6 @@ export default function Header() {
           <Link href='/map' className='rounded-lg px-4 py-2 text-stone-700 hover:bg-stone-100 hover:text-stone-900 transition-all duration-200 font-medium'>Map</Link>
           <Link href='/contact' className='rounded-lg px-4 py-2 text-stone-700 hover:bg-stone-100 hover:text-stone-900 transition-all duration-200 font-medium'>Contact</Link>
           <Link href='/login' className='rounded-lg px-4 py-2 text-stone-700 hover:bg-stone-100 hover:text-stone-900 transition-all duration-200 font-medium'>Login</Link>
-          <Link href='/signup' className='rounded-lg bg-stone-900 px-4 py-2 text-white hover:bg-stone-800 transition-all duration-200 font-medium'>Sign up</Link>
         </nav>
       </div>
     </header>

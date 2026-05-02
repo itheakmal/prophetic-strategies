@@ -53,11 +53,35 @@ export interface TribesGraphData {
   links: Array<Record<string, any>>;
 }
 
+export class ApiClientError extends Error {
+  code?: string;
+  status: number;
+
+  constructor(message: string, status: number, code?: string) {
+    super(message);
+    this.name = 'ApiClientError';
+    this.status = status;
+    this.code = code;
+  }
+}
+
+export interface PersonalReflectionData {
+  authenticated: boolean;
+  reflection: {
+    content: string;
+    updatedAt: string;
+  } | null;
+}
+
 async function parseResponse<T>(response: Response): Promise<T> {
   const payload = await response.json();
 
   if (!response.ok || !payload.success) {
-    throw new Error(payload?.error?.message ?? 'Request failed');
+    throw new ApiClientError(
+      payload?.error?.message ?? 'Request failed',
+      response.status,
+      payload?.error?.code
+    );
   }
 
   return payload.data as T;
@@ -78,4 +102,22 @@ export async function fetchTribesGraph(phase = 'meccan'): Promise<TribesGraphDat
     cache: 'no-store',
   });
   return parseResponse<TribesGraphData>(response);
+}
+
+export async function fetchPersonalReflection(
+  slug: string
+): Promise<PersonalReflectionData> {
+  const response = await fetch(`/api/reflections/${encodeURIComponent(slug)}`, {
+    cache: 'no-store',
+  });
+  return parseResponse<PersonalReflectionData>(response);
+}
+
+export async function savePersonalReflection(slug: string, content: string) {
+  const response = await fetch(`/api/reflections/${encodeURIComponent(slug)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content }),
+  });
+  return parseResponse<{ content: string; updatedAt: string }>(response);
 }

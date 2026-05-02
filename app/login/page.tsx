@@ -1,15 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import SocialLoginButtons from '@/components/auth/SocialLoginButtons';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const returnTo = searchParams.get('returnTo') || '/';
+  const oauthError = searchParams.get('error');
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -27,7 +31,7 @@ export default function LoginPage() {
         setError(body?.error?.message ?? 'Login failed');
         return;
       }
-      router.push('/');
+      router.push(returnTo);
       router.refresh();
     } catch {
       setError('Network error');
@@ -43,11 +47,19 @@ export default function LoginPage() {
       <form className='space-y-4' onSubmit={submit}>
         <input className='w-full rounded-lg border border-stone-300 px-3 py-2' type='email' placeholder='Email' required value={email} onChange={e => setEmail(e.target.value)} />
         <input className='w-full rounded-lg border border-stone-300 px-3 py-2' type='password' placeholder='Password' required value={password} onChange={e => setPassword(e.target.value)} />
-        {error && <p className='text-sm text-rose-700'>{error}</p>}
+        {(error || oauthError) && (
+          <p className='text-sm text-rose-700'>{error ?? oauthError}</p>
+        )}
         <button className='w-full rounded-lg bg-stone-900 py-2 text-white disabled:opacity-50' disabled={loading} type='submit'>
           {loading ? 'Logging in…' : 'Log in'}
         </button>
       </form>
+      <div className='my-4 flex items-center gap-3'>
+        <div className='h-px flex-1 bg-stone-200' />
+        <span className='text-xs text-stone-500'>OR</span>
+        <div className='h-px flex-1 bg-stone-200' />
+      </div>
+      <SocialLoginButtons returnTo={returnTo} />
       <p className='mt-3 text-sm text-stone-600'>
         <Link className='text-amber-700 hover:underline' href='/forgot-password'>
           Forgot password?

@@ -188,23 +188,26 @@ export function useEventProgress() {
 export function useEventActions() {
   const { dispatch } = useEvents();
 
-  return {
-    setChoice: (choice: Choice) =>
-      dispatch({ type: 'SET_CHOICE', payload: choice }),
-    setAnswerIndex: (index: number | null) =>
-      dispatch({ type: 'SET_ANSWER_INDEX', payload: index }),
-    setAnswerChecked: (checked: boolean) =>
-      dispatch({ type: 'SET_ANSWER_CHECKED', payload: checked }),
-    setThinkDeeper: (deeper: boolean) =>
-      dispatch({ type: 'SET_THINK_DEEPER', payload: deeper }),
-    setJournal: (journal: string) =>
-      dispatch({ type: 'SET_JOURNAL', payload: journal }),
-    setSavedAt: (savedAt: string | null) =>
-      dispatch({ type: 'SET_SAVED_AT', payload: savedAt }),
-    setMediaIndex: (index: number) =>
-      dispatch({ type: 'SET_MEDIA_INDEX', payload: index }),
-    resetEventState: () => dispatch({ type: 'RESET_EVENT_STATE' }),
-    switchEvent: (eventId: string) =>
-      dispatch({ type: 'SWITCH_EVENT', payload: eventId }),
-  };
+  return React.useMemo(
+    () => ({
+      setChoice: (choice: Choice) =>
+        dispatch({ type: 'SET_CHOICE', payload: choice }),
+      setAnswerIndex: (index: number | null) =>
+        dispatch({ type: 'SET_ANSWER_INDEX', payload: index }),
+      setAnswerChecked: (checked: boolean) =>
+        dispatch({ type: 'SET_ANSWER_CHECKED', payload: checked }),
+      setThinkDeeper: (deeper: boolean) =>
+        dispatch({ type: 'SET_THINK_DEEPER', payload: deeper }),
+      setJournal: (journal: string) =>
+        dispatch({ type: 'SET_JOURNAL', payload: journal }),
+      setSavedAt: (savedAt: string | null) =>
+        dispatch({ type: 'SET_SAVED_AT', payload: savedAt }),
+      setMediaIndex: (index: number) =>
+        dispatch({ type: 'SET_MEDIA_INDEX', payload: index }),
+      resetEventState: () => dispatch({ type: 'RESET_EVENT_STATE' }),
+      switchEvent: (eventId: string) =>
+        dispatch({ type: 'SWITCH_EVENT', payload: eventId }),
+    }),
+    [dispatch]
+  );
 }

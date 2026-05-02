@@ -8,7 +8,14 @@ import PillButton from '@/components/PillButton';
 import Details from '@/components/Details';
 import MediaCarousel from '@/components/MediaCarousel';
 import SidebarGallery from '@/components/SidebarGallery';
-import { EventDetail, fetchEventDetail } from '@/lib/api/public';
+import LoginModal from '@/components/auth/LoginModal';
+import {
+  ApiClientError,
+  EventDetail,
+  fetchEventDetail,
+  fetchPersonalReflection,
+  savePersonalReflection,
+} from '@/lib/api/public';
 import {
   useEvents,
   useEventProgress,
@@ -24,6 +31,10 @@ interface EventPageProps {
 export default function EventPage({ params }: EventPageProps) {
   const { slug } = React.use(params);
   const [event, setEvent] = React.useState<EventDetail | null>(null);
+  const [reflectionMessage, setReflectionMessage] = React.useState<string | null>(null);
+  const [isSavingReflection, setIsSavingReflection] = React.useState(false);
+  const [isLoadingReflection, setIsLoadingReflection] = React.useState(false);
+  const [showLoginModal, setShowLoginModal] = React.useState(false);
 
   const { state } = useEvents();
   const { progress, badges } = useEventProgress();
@@ -62,6 +73,48 @@ export default function EventPage({ params }: EventPageProps) {
     };
   }, [slug]);
 
+  React.useEffect(() => {
+    let mounted = true;
+
+    setSavedAt(null);
+    setReflectionMessage(null);
+    setIsLoadingReflection(true);
+
+    fetchPersonalReflection(slug)
+      .then(data => {
+        if (!mounted) return;
+
+        if (!data.authenticated) {
+          setJournal('');
+          return;
+        }
+
+        if (data.reflection) {
+          setJournal(data.reflection.content);
+          setSavedAt(new Date(data.reflection.updatedAt).toLocaleString());
+        } else {
+          setJournal('');
+        }
+      })
+      .catch(error => {
+        if (!mounted) return;
+        setReflectionMessage(
+          error instanceof Error
+            ? error.message
+            : 'Unable to load your saved reflection'
+        );
+      })
+      .finally(() => {
+        if (mounted) {
+          setIsLoadingReflection(false);
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [slug, setJournal, setSavedAt]);
+
   if (!event) {
     return null;
   }
@@ -77,8 +130,32 @@ export default function EventPage({ params }: EventPageProps) {
     return state.answerIndex === f.correctIndex;
   }
 
-  function handleSave() {
-    setSavedAt(new Date().toLocaleString());
+  async function handleSave() {
+    const content = state.journal.trim();
+    if (!content) {
+      setReflectionMessage('Write your reflection before saving.');
+      return;
+    }
+
+    setIsSavingReflection(true);
+    setReflectionMessage(null);
+
+    try {
+      const saved = await savePersonalReflection(slug, content);
+      setJournal(saved.content);
+      setSavedAt(new Date(saved.updatedAt).toLocaleString());
+      setReflectionMessage('Reflection saved to your profile.');
+    } catch (error) {
+      if (error instanceof ApiClientError && error.code === 'UNAUTHORIZED') {
+        setShowLoginModal(true);
+        return;
+      }
+      setReflectionMessage(
+        error instanceof Error ? error.message : 'Failed to save reflection'
+      );
+    } finally {
+      setIsSavingReflection(false);
+    }
   }
 
   async function handleShare() {
@@ -101,6 +178,12 @@ export default function EventPage({ params }: EventPageProps) {
 
   return (
     <div className='space-y-8'>
+      <LoginModal
+        open={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={() => setReflectionMessage('Logged in successfully. You can now save your reflection.')}
+        returnTo={`/events/${slug}`}
+      />
       {/* Badges */}
       {badges.length > 0 && (
         <div className='flex flex-wrap gap-3 fade-in-up'>
@@ -468,6 +551,7 @@ export default function EventPage({ params }: EventPageProps) {
               id='journal'
               value={state.journal}
               onChange={e => setJournal(e.target.value)}
+              disabled={isLoadingReflection}
               placeholder='e.g., Speak up for a colleague; support a local justice initiative; commit to fair dealing…'
               className='h-40 w-full resize-none rounded-xl border-2 border-amber-200 bg-white p-4 text-stone-800 placeholder-stone-400 focus:border-amber-500 focus:outline-none transition-colors duration-300'
             />
@@ -479,12 +563,23 @@ export default function EventPage({ params }: EventPageProps) {
                 <span className='font-medium'>Saved: {state.savedAt}</span>
               )}
             </div>
+            {isLoadingReflection && (
+              <p className='mt-2 text-xs font-medium text-amber-800'>
+                Loading your saved reflection...
+              </p>
+            )}
+            {reflectionMessage && (
+              <p className='mt-2 text-xs font-medium text-amber-800'>
+                {reflectionMessage}
+              </p>
+            )}
             <div className='mt-4 flex flex-wrap gap-3'>
               <button
-                onClick={() => setSavedAt(new Date().toLocaleString())}
-                className='rounded-xl bg-amber-600 px-6 py-3 text-sm font-bold text-white hover:bg-amber-700 transition-colors duration-300'
+                onClick={handleSave}
+                disabled={isSavingReflection || isLoadingReflection}
+                className='rounded-xl bg-amber-600 px-6 py-3 text-sm font-bold text-white hover:bg-amber-700 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-60'
               >
-                Save Insight
+                {isSavingReflection ? 'Saving…' : 'Save Insight'}
               </button>
               <button
                 onClick={handleShare}

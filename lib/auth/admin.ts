@@ -12,12 +12,15 @@ type AdminPayload = {
 };
 
 export async function createAdminSession(email: string) {
+  console.log('Creating admin session for email:', email);
   const token = await new SignJWT({ role: 'ADMIN', email })
     .setProtectedHeader({ alg: 'HS256' })
     .setSubject(email)
     .setIssuedAt()
     .setExpirationTime('12h')
     .sign(encoder.encode(env.ADMIN_JWT_SECRET));
+
+  console.log('Admin session token:', token);
 
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
@@ -28,6 +31,7 @@ export async function createAdminSession(email: string) {
     maxAge: 60 * 60 * 12,
   });
 }
+
 
 export async function clearAdminSession() {
   const cookieStore = await cookies();

@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+import { hashPassword } from '../lib/auth/password';
+import { mariadbAdapterUrlFromDatabaseUrl } from '../lib/db/mariadb-url';
 import { EVENTS_DATA } from '../data/utils';
 import { TRIBE_LINKS, TRIBE_NODES } from '../data/tribes';
 
@@ -10,12 +12,14 @@ if (!connectionString) {
   throw new Error('DATABASE_URL is required for seeding.');
 }
 
-const adapter = new PrismaMariaDb(
-  connectionString.startsWith('mysql://')
-    ? connectionString.replace('mysql://', 'mariadb://')
-    : connectionString
-);
+const adapter = new PrismaMariaDb(mariadbAdapterUrlFromDatabaseUrl(connectionString));
 const prisma = new PrismaClient({ adapter });
+
+/** Public app login (`/api/auth/login`). Override with SEED_PUBLIC_USER_* in `.env`. */
+const SEED_PUBLIC_USER_EMAIL =
+  process.env.SEED_PUBLIC_USER_EMAIL?.trim().toLowerCase() ?? 'demo@example.com';
+const SEED_PUBLIC_USER_PASSWORD = process.env.SEED_PUBLIC_USER_PASSWORD ?? 'password123';
+const SEED_PUBLIC_USER_NAME = process.env.SEED_PUBLIC_USER_NAME ?? 'Demo reader';
 
 async function main() {
   for (const [index, event] of EVENTS_DATA.entries()) {
@@ -151,6 +155,24 @@ async function main() {
       },
     });
   }
+
+  const passwordHash = hashPassword(SEED_PUBLIC_USER_PASSWORD);
+
+  await prisma.user.upsert({
+    where: { email: SEED_PUBLIC_USER_EMAIL },
+    update: {
+      name: SEED_PUBLIC_USER_NAME,
+      passwordHash,
+      deletedAt: null,
+      role: 'EDITOR',
+    },
+    create: {
+      email: SEED_PUBLIC_USER_EMAIL,
+      name: SEED_PUBLIC_USER_NAME,
+      role: 'EDITOR',
+      passwordHash,
+    },
+  });
 }
 
 main()

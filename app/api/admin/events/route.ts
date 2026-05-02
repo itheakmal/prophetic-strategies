@@ -2,6 +2,28 @@ import { db } from '@/lib/db/client';
 import { ApiError, errorResponse, successResponse } from '@/lib/errors';
 import { requireAdmin } from '@/lib/auth/admin';
 import { createEventSchema } from '@/lib/validation/event';
+import { ZodError } from 'zod';
+
+function normalizeEventPayload(raw: unknown) {
+  const payload = (raw ?? {}) as Record<string, any>;
+
+  if (Array.isArray(payload.quotes)) {
+    payload.quotes = payload.quotes.map((q: Record<string, any>) => ({
+      ...q,
+      details: q?.details === '' ? undefined : q?.details,
+    }));
+  }
+
+  if (Array.isArray(payload.media)) {
+    payload.media = payload.media.map((m: Record<string, any>) => ({
+      ...m,
+      alt: m?.alt === '' ? undefined : m?.alt,
+      poster: m?.poster === '' ? undefined : m?.poster,
+    }));
+  }
+
+  return payload;
+}
 
 export async function GET() {
   try {
@@ -19,7 +41,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await requireAdmin();
-    const payload = createEventSchema.parse(await request.json());
+    const payload = createEventSchema.parse(normalizeEventPayload(await request.json()));
 
     const event = await db.event.create({
       data: {
@@ -93,6 +115,15 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof Error && error.message === 'UNAUTHORIZED') {
       return errorResponse(new ApiError(401, 'UNAUTHORIZED', 'Admin authentication required'));
+    }
+    if (error instanceof ZodError) {
+      return errorResponse(
+        new ApiError(
+          400,
+          'VALIDATION_ERROR',
+          error.issues.map(issue => issue.message).join('; ')
+        )
+      );
     }
     return errorResponse(error);
   }

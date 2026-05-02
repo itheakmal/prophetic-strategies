@@ -34,6 +34,9 @@ model User {
   auditLogs    AuditLog[]
   resetTokens  PasswordResetToken[]
   reflections  PersonalReflection[]
+  homeworkSubmissions HomeworkSubmission[]
+  homeworkComments HomeworkComment[]
+  homeworkPins      HomeworkPin[]
 }
 
 model Event {
@@ -199,4 +202,57 @@ model PersonalReflection {
 
   @@unique([userId, eventId])
   @@index([eventId, updatedAt])
+}
+
+model HomeworkSubmission {
+  id           String   @id @default(cuid())
+  userId       String
+  title        String   @db.VarChar(240)
+  sessionLabel String   @db.VarChar(240)
+  thoughts     String   @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  files        HomeworkFile[]
+  comments     HomeworkComment[]
+  pins         HomeworkPin[]
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
+}
+
+model HomeworkFile {
+  id             String             @id @default(cuid())
+  submissionId   String
+  originalName   String             @db.VarChar(480)
+  storedFileName String             @db.VarChar(240)
+  mimeType       String             @db.VarChar(127)
+  sizeBytes      Int
+  submission     HomeworkSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+}
+
+model HomeworkComment {
+  id         String             @id @default(cuid())
+  homeworkId String
+  userId     String
+  body       String             @db.Text
+  createdAt  DateTime           @default(now())
+  homework   HomeworkSubmission @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([homeworkId, createdAt])
+}
+
+model HomeworkPin {
+  userId     String
+  homeworkId String
+  createdAt  DateTime           @default(now())
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  homework   HomeworkSubmission @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
+
+  @@id([userId, homeworkId])
+  @@index([userId])
 }

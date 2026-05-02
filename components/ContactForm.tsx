@@ -20,6 +20,7 @@ export default function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -33,6 +34,7 @@ export default function ContactForm() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setErrorDetail(null);
 
     try {
       const response = await fetch('/api/contact', {
@@ -43,15 +45,25 @@ export default function ContactForm() {
         body: JSON.stringify(formData),
       });
 
+      const payload = await response.json().catch(() => null);
+
       if (response.ok) {
         setSubmitStatus('success');
         setFormData({ name: '', email: '', subject: '', message: '', website: '' });
       } else {
         setSubmitStatus('error');
+        const msg =
+          payload?.success === false && typeof payload?.error?.message === 'string'
+            ? payload.error.message
+            : typeof payload?.message === 'string'
+              ? payload.message
+              : null;
+        setErrorDetail(msg ?? null);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');
+      setErrorDetail('Network error. Check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -71,6 +83,8 @@ export default function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             required
+            minLength={2}
+            maxLength={120}
             className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200"
             placeholder="Your full name"
           />
@@ -93,9 +107,9 @@ export default function ContactForm() {
       </div>
       
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-stone-700 mb-2">
-          Subject *
-        </label>
+          <label htmlFor="subject" className="block text-sm font-medium text-stone-700 mb-2">
+            Subject * <span className="font-normal text-stone-500">(min 2 characters)</span>
+          </label>
         <input
           type="text"
           id="subject"
@@ -103,6 +117,8 @@ export default function ContactForm() {
           value={formData.subject}
           onChange={handleChange}
           required
+          minLength={2}
+          maxLength={180}
           className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200"
           placeholder="What is this about?"
         />
@@ -131,6 +147,8 @@ export default function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           required
+          minLength={10}
+          maxLength={4000}
           rows={6}
           className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors duration-200 resize-vertical"
           placeholder="Tell us more about your inquiry..."
@@ -146,10 +164,15 @@ export default function ContactForm() {
       )}
 
       {submitStatus === 'error' && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg space-y-1">
           <p className="text-red-800 font-medium">
-            Sorry, there was an error sending your message. Please try again.
+            Sorry, we could not submit your message.
           </p>
+          {errorDetail ? (
+            <p className="text-sm text-red-700">{errorDetail}</p>
+          ) : (
+            <p className="text-sm text-red-700">Please try again.</p>
+          )}
         </div>
       )}
 

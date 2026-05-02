@@ -52,3 +52,12 @@ export async function getUserSession(): Promise<UserPayload | null> {
     return null;
   }
 }
+
+/** Use in routes: returns session or unified UNAUTHORIZED throw handled like admin routes. */
+export async function requireUserSession(): Promise<UserPayload> {
+  const session = await getUserSession();
+  if (!session) {
+    throw new Error('UNAUTHORIZED_USER');
+  }
+  return session;
+}

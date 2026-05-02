@@ -4,6 +4,7 @@ import { env } from '@/lib/env';
 import { ApiError, errorResponse, successResponse } from '@/lib/errors';
 import { logger } from '@/lib/logger';
 import { checkRateLimit } from '@/lib/rate-limit';
+import { ZodError } from 'zod';
 import { contactSubmissionSchema } from '@/lib/validation/contact';
 
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
@@ -46,38 +47,50 @@ export async function POST(request: Request) {
       },
     });
 
+    let emailSent = false;
     if (resend) {
       const safeName = escapeHtml(parsed.name);
       const safeEmail = escapeHtml(parsed.email);
       const safeSubject = escapeHtml(parsed.subject);
       const safeMessage = escapeHtml(parsed.message).replace(/\n/g, '<br>');
 
-      await resend.emails.send({
-        from: 'Divine Prophetic Strategies <noreply@divinepropheticstrategies.com>',
-        to: [env.ADMIN_EMAIL],
-        subject: `New contact form submission: ${parsed.subject}`,
-        html: `<p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Subject:</strong> ${safeSubject}</p><p><strong>Message:</strong><br>${safeMessage}</p>`,
-      });
+      try {
+        await resend.emails.send({
+          from: 'Divine Prophetic Strategies <noreply@divinepropheticstrategies.com>',
+          to: [env.ADMIN_EMAIL],
+          subject: `New contact form submission: ${parsed.subject}`,
+          html: `<p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Subject:</strong> ${safeSubject}</p><p><strong>Message:</strong><br>${safeMessage}</p>`,
+        });
 
-      await resend.emails.send({
-        from: 'Divine Prophetic Strategies <noreply@divinepropheticstrategies.com>',
-        to: [parsed.email],
-        subject: 'Thanks for contacting Divine Prophetic Strategies',
-        html: `<p>Dear ${safeName},</p><p>Thanks for your message about \"${safeSubject}\". We will respond shortly.</p>`,
-      });
+        await resend.emails.send({
+          from: 'Divine Prophetic Strategies <noreply@divinepropheticstrategies.com>',
+          to: [parsed.email],
+          subject: 'Thanks for contacting Divine Prophetic Strategies',
+          html: `<p>Dear ${safeName},</p><p>Thanks for your message about \"${safeSubject}\". We will respond shortly.</p>`,
+        });
 
-      await db.contactSubmission.update({
-        where: { id: submission.id },
-        data: { emailSentAt: new Date() },
-      });
+        await db.contactSubmission.update({
+          where: { id: submission.id },
+          data: { emailSentAt: new Date() },
+        });
+        emailSent = true;
+      } catch (emailErr) {
+        logger.error({ err: emailErr, submissionId: submission.id }, 'Contact email send failed (submission saved)');
+      }
     }
 
     return successResponse({
       id: submission.id,
       message: 'Thank you for your message! We will get back to you soon.',
+      emailSent,
     });
   } catch (error) {
-    logger.error({ error }, 'Contact submission failed');
+    if (error instanceof SyntaxError || error instanceof TypeError) {
+      return errorResponse(new ApiError(400, 'INVALID_BODY', 'Invalid JSON body'));
+    }
+    if (!(error instanceof ZodError)) {
+      logger.error({ error }, 'Contact submission failed');
+    }
     return errorResponse(error);
   }
 }

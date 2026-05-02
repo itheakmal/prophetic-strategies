@@ -16,6 +16,8 @@ const envSchema = z.object({
   FACEBOOK_CLIENT_SECRET: z.string().optional(),
   APPLE_CLIENT_ID: z.string().optional(),
   APPLE_CLIENT_SECRET: z.string().optional(),
+  /** Root directory for private homework uploads (under this: homework/{submissionId}/...) */
+  HOMEWORK_UPLOAD_ROOT: z.string().optional(),
 });
 
 export const env = envSchema.parse({
@@ -34,4 +36,5 @@ export const env = envSchema.parse({
   FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
   APPLE_CLIENT_ID: process.env.APPLE_CLIENT_ID,
   APPLE_CLIENT_SECRET: process.env.APPLE_CLIENT_SECRET,
+  HOMEWORK_UPLOAD_ROOT: process.env.HOMEWORK_UPLOAD_ROOT,
 });

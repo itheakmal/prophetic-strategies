@@ -1,6 +1,10 @@
 'use client';
 
+import { Trash2, UserRoundPlus } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import AdminFormField from '@/components/admin/AdminFormField';
+import { AdminButton } from '@/components/admin/AdminButton';
+import { adminInputClass, adminSelectClass } from '@/components/admin/input-classes';
 import { adminFetch } from '@/lib/api/admin-browser';
 
 type UserRow = {
@@ -69,23 +73,87 @@ export default function AdminUsersPage() {
 
   return (
     <div className='space-y-6'>
-      <h1 className='font-serif text-3xl font-bold text-stone-900'>Users</h1>
-      <form className='grid gap-3 rounded-xl border border-stone-200 p-4 sm:grid-cols-2' onSubmit={onCreate}>
-        <input className='rounded-lg border border-stone-300 px-3 py-2' placeholder='Name (optional)' value={form.name} onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))} />
-        <input className='rounded-lg border border-stone-300 px-3 py-2' type='email' placeholder='Email' required value={form.email} onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))} />
-        <input className='rounded-lg border border-stone-300 px-3 py-2' type='password' placeholder='Password' minLength={8} required value={form.password} onChange={e => setForm(prev => ({ ...prev, password: e.target.value }))} />
-        <select className='rounded-lg border border-stone-300 px-3 py-2' value={form.role} onChange={e => setForm(prev => ({ ...prev, role: e.target.value as 'ADMIN' | 'EDITOR' }))}>
-          <option value='EDITOR'>EDITOR</option>
-          <option value='ADMIN'>ADMIN</option>
-        </select>
-        <button type='submit' className='rounded-lg bg-stone-900 px-4 py-2 text-white sm:col-span-2'>
+      <div>
+        <h1 className='font-serif text-3xl font-bold text-stone-900'>Users</h1>
+        <p className='mt-1 max-w-2xl text-sm text-stone-600'>
+          Provision curriculum editors or elevated admins who can authenticate into this portal alongside public learners on the marketing site.
+        </p>
+      </div>
+
+      <form
+        className='grid gap-4 rounded-xl border border-stone-200 bg-gradient-to-b from-white to-stone-50/70 p-5 shadow-sm sm:grid-cols-2'
+        onSubmit={onCreate}
+      >
+        <AdminFormField
+          id='user-name'
+          label='Full name'
+          hint='Friendly display pulled into audit trails; optional because many editor accounts rely on shared email identities.'
+        >
+          <input
+            id='user-name'
+            className={adminInputClass}
+            value={form.name}
+            onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))}
+          />
+        </AdminFormField>
+        <AdminFormField
+          id='user-email'
+          label='Work email'
+          hint='Canonical login identifier; duplicates are rejected.'
+        >
+          <input
+            id='user-email'
+            className={adminInputClass}
+            type='email'
+            required
+            value={form.email}
+            onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
+          />
+        </AdminFormField>
+        <AdminFormField
+          id='user-password'
+          label='Initial password'
+          hint='Minimum eight characters—the user should rotate after first login in production deployments.'
+          className='sm:col-span-2'
+        >
+          <input
+            id='user-password'
+            className={adminInputClass}
+            type='password'
+            minLength={8}
+            required
+            autoComplete='new-password'
+            value={form.password}
+            onChange={e => setForm(prev => ({ ...prev, password: e.target.value }))}
+          />
+        </AdminFormField>
+        <AdminFormField
+          id='user-role'
+          label='Role'
+          hint='ADMIN unlocks destructive actions and privileged APIs; EDITOR suffices for authoring events/tribes/content.'
+          className='sm:col-span-2'
+        >
+          <select
+            id='user-role'
+            className={adminSelectClass}
+            value={form.role}
+            onChange={e => setForm(prev => ({ ...prev, role: e.target.value as 'ADMIN' | 'EDITOR' }))}
+          >
+            <option value='EDITOR'>EDITOR — content ops</option>
+            <option value='ADMIN'>ADMIN — full control</option>
+          </select>
+        </AdminFormField>
+
+        <AdminButton buttonType='submit' icon={UserRoundPlus} className='sm:col-span-2'>
           Add user
-        </button>
+        </AdminButton>
       </form>
-      {error && <p className='text-sm text-rose-700'>{error}</p>}
-      <div className='overflow-x-auto rounded-xl border border-stone-200'>
+
+      {error && <p className='rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800'>{error}</p>}
+
+      <div className='overflow-x-auto rounded-xl border border-stone-200 shadow-sm'>
         <table className='min-w-full text-left text-sm'>
-          <thead className='bg-stone-100 text-stone-700'>
+          <thead className='bg-gradient-to-r from-stone-100 to-stone-50 text-stone-700'>
             <tr>
               <th className='px-4 py-2'>Name</th>
               <th className='px-4 py-2'>Email</th>
@@ -97,15 +165,14 @@ export default function AdminUsersPage() {
           <tbody>
             {users.map(u => (
               <tr key={u.id} className='border-t border-stone-200'>
-                <td className='px-4 py-2'>{u.name ?? '-'}</td>
-                <td className='px-4 py-2'>{u.email}</td>
+                <td className='px-4 py-2'>{u.name ?? '—'}</td>
+                <td className='px-4 py-2 font-mono text-xs text-stone-800'>{u.email}</td>
                 <td className='px-4 py-2'>
                   <select
-                    className='rounded border border-stone-300 px-2 py-1 text-xs'
+                    className={`${adminSelectClass} max-w-[220px]`}
                     value={u.role}
-                    onChange={e =>
-                      void onRoleChange(u, e.target.value as 'ADMIN' | 'EDITOR')
-                    }
+                    aria-label={`Role for ${u.email}`}
+                    onChange={e => void onRoleChange(u, e.target.value as 'ADMIN' | 'EDITOR')}
                   >
                     <option value='EDITOR'>EDITOR</option>
                     <option value='ADMIN'>ADMIN</option>
@@ -113,13 +180,9 @@ export default function AdminUsersPage() {
                 </td>
                 <td className='px-4 py-2 text-xs text-stone-600'>{new Date(u.createdAt).toLocaleString()}</td>
                 <td className='px-4 py-2'>
-                  <button
-                    type='button'
-                    className='rounded bg-rose-100 px-2 py-1 text-xs text-rose-700'
-                    onClick={() => void onDelete(u)}
-                  >
+                  <AdminButton variant='danger' icon={Trash2} className='px-3 py-1.5 text-xs' onClick={() => void onDelete(u)}>
                     Delete
-                  </button>
+                  </AdminButton>
                 </td>
               </tr>
             ))}

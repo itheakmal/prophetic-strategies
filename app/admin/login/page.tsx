@@ -1,7 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { LockKeyhole, LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import AdminFormField from '@/components/admin/AdminFormField';
+import { AdminButton } from '@/components/admin/AdminButton';
+import { adminInputClass } from '@/components/admin/input-classes';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -36,53 +40,63 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className='mx-auto max-w-md rounded-2xl border border-stone-200 bg-white p-8 shadow-sm'>
-      <h1 className='mb-2 font-serif text-2xl font-bold text-stone-900'>Admin sign in</h1>
-      <p className='mb-6 text-sm text-stone-600'>
-        Use credentials from <code className='rounded bg-stone-100 px-1'>ADMIN_EMAIL</code>{' '}
-        and <code className='rounded bg-stone-100 px-1'>ADMIN_PASSWORD</code> in your env.
-      </p>
-      <form onSubmit={onSubmit} className='space-y-4'>
+    <div className='mx-auto max-w-md rounded-2xl border border-stone-200 bg-gradient-to-b from-white to-stone-50/80 p-8 shadow-xl ring-1 ring-stone-100'>
+      <div className='mb-2 flex items-center gap-2'>
+        <span className='flex size-11 items-center justify-center rounded-xl bg-gradient-to-br from-stone-900 to-stone-950 text-white shadow-md'>
+          <LockKeyhole className='size-5' strokeWidth={2} aria-hidden />
+        </span>
         <div>
-          <label htmlFor='email' className='mb-1 block text-sm font-medium text-stone-700'>
-            Email
-          </label>
+          <h1 className='font-serif text-2xl font-bold text-stone-900'>Admin sign in</h1>
+          <p className='text-sm text-stone-600'>
+            Operators only — use{' '}
+            <code className='rounded bg-stone-100 px-1 text-xs'>ADMIN_EMAIL</code> /{' '}
+            <code className='rounded bg-stone-100 px-1 text-xs'>ADMIN_PASSWORD</code>.
+          </p>
+        </div>
+      </div>
+
+      <form onSubmit={onSubmit} className='mt-6 space-y-4'>
+        <AdminFormField
+          id='admin-email'
+          label='Administrator email'
+          hint='Must match ADMIN_EMAIL configured in your deployment secrets or local .env file.'
+        >
           <input
-            id='email'
+            id='admin-email'
             type='email'
             autoComplete='username'
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className='w-full rounded-lg border border-stone-300 px-3 py-2 text-stone-900'
+            className={adminInputClass}
             required
           />
-        </div>
-        <div>
-          <label htmlFor='password' className='mb-1 block text-sm font-medium text-stone-700'>
-            Password
-          </label>
+        </AdminFormField>
+
+        <AdminFormField
+          id='admin-password'
+          label='Password'
+          hint='Paired credential from ADMIN_PASSWORD. Treat like production infrastructure—never reuse personal passwords.'
+        >
           <input
-            id='password'
+            id='admin-password'
             type='password'
             autoComplete='current-password'
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className='w-full rounded-lg border border-stone-300 px-3 py-2 text-stone-900'
+            className={adminInputClass}
             required
           />
-        </div>
-        {error && (
+        </AdminFormField>
+
+        {error ? (
           <p className='rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800' role='alert'>
             {error}
           </p>
-        )}
-        <button
-          type='submit'
-          disabled={loading}
-          className='w-full rounded-lg bg-stone-900 py-2.5 text-sm font-semibold text-white hover:bg-stone-800 disabled:opacity-50'
-        >
+        ) : null}
+
+        <AdminButton loading={loading} icon={loading ? undefined : LogIn} buttonType='submit' className='w-full py-3'>
           {loading ? 'Signing in…' : 'Sign in'}
-        </button>
+        </AdminButton>
       </form>
     </div>
   );

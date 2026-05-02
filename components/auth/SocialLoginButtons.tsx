@@ -13,7 +13,7 @@ const providers = [
 export default function SocialLoginButtons({ returnTo }: SocialLoginButtonsProps) {
   return (
     <div className='space-y-2'>
-      {providers.map(provider => (
+      {/* {providers.map(provider => (
         <a
           key={provider.id}
           href={`/api/auth/oauth/${provider.id}/start?returnTo=${encodeURIComponent(returnTo)}`}
@@ -21,7 +21,7 @@ export default function SocialLoginButtons({ returnTo }: SocialLoginButtonsProps
         >
           {provider.label}
         </a>
-      ))}
+      ))} */}
     </div>
   );
 }
